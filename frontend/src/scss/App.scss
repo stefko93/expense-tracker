@@ -8,7 +8,12 @@
     max-width: 100vw;
   }
 
-  // .btn {
-  //   color: $black;
-  //   background-color: $yellow-300;
-  // }
+.container-chart{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 10px;
+    width: 100%;
+    height: 500px;
+    background-color: #fff;
+}
