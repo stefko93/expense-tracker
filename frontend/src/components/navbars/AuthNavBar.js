@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 
 const AuthNavBar = () => {
     return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <div className="container-fluid justify-content-center">
-        <Link className="navbar-brand" to="/">Expense tracker</Link>
-      </div>
-    </nav>
+      <header className="navbar navbar-light sticky-top bg-light flex-md-nowrap p-0 shadow">
+      <Link class="navbar-brand col-md-3 col-lg-2 me-0 px-3" to="/">Expense tracker</Link>
+      <button className="navbar-toggler d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="true" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon" />
+      </button>
+</header>
     )
 }
 

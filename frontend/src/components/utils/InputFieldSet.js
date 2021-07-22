@@ -11,6 +11,7 @@ export default function InputFieldSet({
   labelText,
   required,
   reference,
+  placeholder
 }) {
   return (
     <div className={`mb-3 ${errors[name] !== '' ? 'was-validated' : ''} col-md-12`}>
@@ -27,6 +28,7 @@ export default function InputFieldSet({
         onBlur={handleInputBlur}
         required={required}
         ref={reference}
+        placeholder={placeholder}
       />
       <div className="invalid-feedback">{errors[name]}</div>
     </div>

@@ -1,39 +1,50 @@
-/* eslint-disable react/style-prop-object */
 import React from 'react'
 import { Link } from 'react-router-dom';
 
 const SideBar = () => {
     return (
-        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-      <div class="position-sticky pt-3">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <Link to="/main" className="nav-link link-dark">
-                            <svg className="bi me-2" width="16" height="16"><i class="bi bi-cash-coin"></i></svg>
+        <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse" style={{}}>
+        <div className="position-sticky pt-3">
+        <ul className="nav flex-column">
+        <li className="nav-item">
+            <Link to="/dashboard" className="nav-link link-dark">
+                            <svg className="bi me-2" width="16" height="16"><i className="bi bi-cash-coin" /></svg>
+                            Dashboard
+                            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/add" className="nav-link link-dark">
+                            <svg className="bi me-2" width="16" height="16"><i className="bi bi-plus-circle" /></svg>
+                            Add
+                            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/transactions" className="nav-link link-dark">
+                            <svg className="bi me-2" width="16" height="16"><i className="bi bi-cash-coin" /></svg>
                             Transactions
                             </Link>
           </li>
-          <li class="nav-item">
+          <li className="nav-item">
             <Link to="/incomes" className="nav-link link-dark">
-                            <svg className="bi me-2" width="16" height="16"><i class="bi bi-droplet-fill"></i></svg>
+                            <svg className="bi me-2" width="16" height="16"><i className="bi bi-droplet-fill" /></svg>
                             Incomes
                             </Link>
           </li>
-          <li class="nav-item">
+          <li className="nav-item">
             <Link to="/expenses" className="nav-link link-dark">
-                            <svg className="bi me-2" width="16" height="16"><i class="bi bi-droplet"></i></svg>
+                            <svg className="bi me-2" width="16" height="16"><i className="bi bi-droplet" /></svg>
                             Expenses
                             </Link>
           </li>
           <li>
             <Link to="/profile" className="nav-link link-dark">
-                            <svg className="bi me-2" width="16" height="16"><i class="bi bi-person-circle"></i></svg>
+                            <svg className="bi me-2" width="16" height="16"><i className="bi bi-person-circle" /></svg>
                             Profile
                             </Link>
           </li>
-          <li class="nav-item">
+          <li className="nav-item">
             <Link to="/logout" className="nav-link link-dark">
-                            <svg className="bi me-2" width="16" height="16"><i class="bi bi-box-arrow-in-left"></i></svg>
+                            <svg className="bi me-2" width="16" height="16"><i className="bi bi-box-arrow-in-left" /></svg>
                             Logout
                             </Link>
           </li>

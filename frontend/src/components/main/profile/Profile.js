@@ -1,10 +1,13 @@
-import React from 'react'
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
+import React from 'react';
 
-import AuthNavBar from '../navbars/AuthNavBar';
-import SideBar from '../utils/SideBar';
-import Expenses from './expenses/ExpensesChart';
+import AuthNavBar from '../../navbars/AuthNavBar';
+import SideBar from '../../utils/SideBar';
+import Avatar from './Avatar';
 
-const Main = () => {
+
+export default function Profile(props) {
     return (
         <>
             <AuthNavBar />
@@ -16,11 +19,13 @@ const Main = () => {
                         <div className="chartjs-size-monitor"><div className="chartjs-size-monitor-expand"><div className="" /></div><div className="chartjs-size-monitor-shrink"><div className="" /></div></div>
                         
                         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h1 className="h2">Dashboard</h1>
+                            <h1 className="h2">Profile</h1>
                         </div>
 
-                        <div className="my-4 w-100 chartjs-render-monitor" id="myChart" width="1550" height="653" style={{display: 'flex', height: '523px', width: '1240px'}}>
-                            <Expenses />
+                        
+                        <Avatar />
+                        <div>
+                            {props.name}
                         </div>
                         
                     </main>
@@ -29,5 +34,3 @@ const Main = () => {
         </>
     )
 }
-
-export default Main;
