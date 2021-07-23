@@ -1,4 +1,7 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import React from 'react';
+import { BrowserRouter as Route } from 'react-router-dom';
 
 import AuthNavBar from '../../navbars/AuthNavBar';
 import SideBar from '../../utils/SideBar';
@@ -7,9 +10,9 @@ import IncomeExpenses from './IncomeExpenses';
 import Adder from './Adder';
 
 
-export default function Dashboard() {
+export default function Dashboard({user, setUser, logOut}) {
   return (
-    <>
+    <Route path="/dashboard">
       <AuthNavBar />
       <div className='container-fluid'>
           <div className="row">
@@ -22,14 +25,14 @@ export default function Dashboard() {
               <h1 className="h2">Dashboard</h1>
             </div>
 
-            <Balance />
-            <IncomeExpenses />
-            <Adder />
+            <Balance user={user} setUser={setUser} logOut={logOut} />
+            <IncomeExpenses user={user} setUser={setUser} logOut={logOut} />
+            <Adder user={user} setUser={setUser} logOut={logOut} />
 
           </main>
           </div>
       </div>
 
-    </>
+    </Route>
   );
 }

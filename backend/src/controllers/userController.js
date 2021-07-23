@@ -11,11 +11,6 @@ export const userController = {
     res.status(user.status).json({ user });
   },
 
-  async getUsers(req, res) {
-    const users = await userService.getUsers();
-    res.json(users);
-  },
-
   async getUserById(req, res) {
     const { id } = req.params;
     const user = await userService.getUserById(id);

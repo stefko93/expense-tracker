@@ -1,9 +1,11 @@
+/* eslint-disable react/prop-types */
 import React, { useState, useRef } from 'react';
 import { Redirect } from 'react-router-dom';
+import validator from 'validator';
 
 import InputFieldSet from '../utils/InputFieldSet';
 
-const LoginForm = () => {
+const LoginForm = ({ user, setUser }) => {
     const [fieldValues, setFieldValues] = useState({
       email: '',
       password: '',
@@ -13,16 +15,14 @@ const LoginForm = () => {
       email: '',
       password: '',
     });
-  
-    const [isLoginSuccess, setIsLoginSuccess] = useState(false);
-  
+
     const [formWasValidated, setFormWasValidated] = useState(false);
   
     const references = {
       email: useRef(),
       password: useRef(),
     };
-  
+
     const [formAlertText, setFormAlertText] = useState('');
     const [formAlertType, setFormAlertType] = useState('');
   
@@ -30,26 +30,31 @@ const LoginForm = () => {
       return value !== '';
     }
   
-    function checkEmail(value) {
-      const validRegex =
-        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-      return value.match(validRegex);
+    const isValidEmail = (value) => validator.isEmail(value);
+
+    function isStrongPassword(value){
+      return validator.isStrongPassword(value, {
+          minLength: 8, minLowercase: 1,
+          minUppercase: 1, minNumbers: 1, minSymbols: 1  
+      })
     }
-  
+
     const validators = {
-      email: {
-        required: isNotEmpty,
-        checkEmail,
-      },
-      password: {
-        required: isNotEmpty,
-      },
-    };
+    email: {
+      required: isNotEmpty,
+      email: isValidEmail
+    },
+    password: {
+      required: isNotEmpty,
+      passwordType: isStrongPassword,
+    }
+  };
   
     const errorTypes = {
-      required: 'Value is missing',
-      checkEmail: 'Not valid email',
-    };
+    required: "Value is missing",
+    email: "Invalid value",
+    passwordType: "Password should contain: 8 character, lowercase, uppercase, number and special character"
+  };
   
     function validateField(fieldName) {
       const value = fieldValues[fieldName];
@@ -145,7 +150,7 @@ const LoginForm = () => {
             } else {
               localStorage.setItem(
                 'user',
-                JSON.stringify({ token: res.user.token })
+                JSON.stringify(res.user)
               );
               setFieldValues({
                 email: '',
@@ -153,7 +158,7 @@ const LoginForm = () => {
               });
               setFormAlertText('');
               setFormAlertType('');
-              setIsLoginSuccess(true);
+              setUser(res.user);
             }
           })
           .catch(error => {
@@ -176,12 +181,13 @@ const LoginForm = () => {
       validateField(fieldName);
     }
   
-    if (isLoginSuccess) {
-      return <Redirect to="/dashboard" />;
+    if (user) {
+      return <Redirect to="/dashboard"/>;
     }
   
     return (
       <main className="d-flex justify-content-center">
+        
         <form onSubmit={handleSubmit} noValidate
           className={`form-group w-50 text-center needs-validation ${formWasValidated ? 'was-validated' : ''}`}
         >

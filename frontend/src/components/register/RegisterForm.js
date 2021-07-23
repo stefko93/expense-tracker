@@ -21,9 +21,7 @@ const RegisterForm = () => {
     });
   
     const [isRegisterSuccess, setIsRegisterSuccess] = useState(false);
-  
     const [formWasValidated, setFormWasValidated] = useState(false);
-  
     const [formAlertText, setFormAlertText] = useState('');
     const [formAlertType, setFormAlertType] = useState('');
   
@@ -44,7 +42,9 @@ const RegisterForm = () => {
       return value !== '';
     }
   
-    const isEmailValid = (value) => validator.isEmail(value)
+    const isEmailValid = (value) => validator.isEmail(value);
+
+    const isValidName = (value) => validator.isAlpha(value);
   
     function isStrongPassword(value) {
       return validator.isStrongPassword(value, {
@@ -55,10 +55,12 @@ const RegisterForm = () => {
   
     const validators = {
       firstName: {
-        required: isNotEmpty
+        required: isNotEmpty,
+        isAlpha: isValidName
       },
       lastName: {
-        required: isNotEmpty
+        required: isNotEmpty,
+        isAlpha: isValidName
       },
       email: {
         required: isNotEmpty,
@@ -200,7 +202,8 @@ const RegisterForm = () => {
     }
   
     return (
-      <main className="d-flex justify-content-center">
+      <main className="d-flex justify-content-center text-center">
+        
         <form onSubmit={handleSubmit} noValidate
           className={`form-group w-50 text-center needs-validation ${formWasValidated ? 'was-validated' : ''} `}>
   

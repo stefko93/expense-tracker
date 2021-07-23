@@ -98,22 +98,6 @@ export const userService = {
     }
   },
 
-  async getUsers() {
-    try {
-      const users = await User.find();
-      return {
-        status: 200,
-        message: 'Get users from database',
-        users,
-      };
-    } catch (err) {
-      return {
-        status: 500,
-        error: err,
-      };
-    }
-  },
-
   async getUserById(id) {
     try {
       const singleUser = await User.findById({ _id: id });
