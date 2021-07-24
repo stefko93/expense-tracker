@@ -21,6 +21,8 @@ const AddTransaction = () => {
     }
 
     addTransaction(newTransaction);
+    setText('');
+    setAmount('');
   }
 
   return (
@@ -41,7 +43,7 @@ const AddTransaction = () => {
           <label htmlFor="date">Date</label>
           <input type="date" value={date} onChange={(e) => setDate(e.target.value)}  />
         </div>
-        <button className="btn">Add transaction</button>
+        <button className="btn btn-dark">Add transaction</button>
       </form>
     </>
   )

@@ -12,7 +12,7 @@ import Adder from './Adder';
 
 export default function Dashboard({user, setUser, logOut}) {
   return (
-    <Route path="/dashboard">
+    <>
       <AuthNavBar />
       <div className='container-fluid'>
           <div className="row">
@@ -33,6 +33,6 @@ export default function Dashboard({user, setUser, logOut}) {
           </div>
       </div>
 
-    </Route>
+    </>
   );
 }

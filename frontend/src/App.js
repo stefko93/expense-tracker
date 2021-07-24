@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 // import Home from './components/home/Home';
@@ -16,24 +16,10 @@ import Profile from './components/main/profile/Profile'
 import { GlobalProvider } from './context/GlobalState';
 import './scss/App.scss';
 import NonAuthDashboard from './components/home/NonAuthDashboard';
+import Update from './components/main/transactions/Update';
 
-import ProtectedRoute from './components/utils/ProtectedRoute'
-
-function getUser() {
-  const storageUser = localStorage.getItem('user');
-  if (!storageUser) {
-    return null;
-  }
-  return storageUser;
-}
 
 function App() {
-  const [user, setUser] = useState(getUser());
-
-  function logOut() {
-    localStorage.removeItem('user');
-    setUser(null);
-  }
 
   return (
     <GlobalProvider>
@@ -41,41 +27,28 @@ function App() {
           
         <Switch>
           <Route path="/register"><Register /></Route>
-          <Route path="/login"><Login setUser={setUser} logOut={logOut} /></Route>
+          <Route path="/login"><Login /></Route>
           
-          <Route path="/">          
+          {/* <Route exact path="/">          
               {(user === null || user === undefined) && <NonAuthDashboard/>} 
           </Route>
         <ProtectedRoute
           path="/dashboard"
           component={() => <Dashboard setUser={setUser} logOut={logOut}/>}
-        />
+        /> */}
 
-          {/* <Route path="/main">
-            <Main />
-          </Route> */}
           
-          <Route path="/dashboard">
-            <Dashboard />
-          </Route>
-          <Route path="/add">
-            <Add />
-          </Route>
-          <Route path="/transactions">
-            <Transactions />
-          </Route>
-          <Route path="/expenses">
-            <Expenses />
-          </Route>
-          <Route path="/incomes">
-            <Incomes />
-          </Route>
-          <Route path="/profile">
-            <Profile />
-          </Route>
-          
-          
+          <Route path="/dashboard"><Dashboard /></Route>
+          <Route path="/add"><Add /></Route>
+          <Route path="/update"><Update /></Route>
+          <Route path="/transactions"><Transactions /></Route>
+          <Route path="/expenses"><Expenses /></Route>
+          <Route path="/incomes"><Incomes /></Route>
+          <Route path="/profile"><Profile /></Route>
 
+          <Route path="/">
+            <NonAuthDashboard />
+          </Route>
         </Switch>
       </Router>
     </GlobalProvider>

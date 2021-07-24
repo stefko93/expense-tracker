@@ -1,11 +1,16 @@
 /* eslint-disable no-return-assign */
 /* eslint-disable no-param-reassign */
-import React, { useContext } from 'react';
+import React, { useContext, useEffect  } from 'react';
 
 import { GlobalContext } from '../../../context/GlobalState';
+import numberWithCommas from '../../utils/Format';
 
 export default function Balance() {
-    const { transactions } = useContext(GlobalContext);
+    const { transactions, getTransactions } = useContext(GlobalContext);
+
+    useEffect(() => {
+        getTransactions();
+    }, [])
 
     const amounts = transactions.map(transition => transition.amount);
     const total = amounts.reduce((acc, item) => (acc += item), 0);
@@ -16,7 +21,7 @@ export default function Balance() {
                 <h4>Your Balance</h4>
             </div>
             <div className="d-flex justify-content-center">
-                <h1>{total}Ft</h1>
+                <h1>{numberWithCommas(total)}Ft</h1>
             </div>
         </div>
     )

@@ -1,10 +1,15 @@
 import React from 'react';
 
 import AuthNavBar from '../../navbars/AuthNavBar';
+// import Form from '../../utils/Form';
 import SideBar from '../../utils/SideBar';
-import AddTransaction from './AddTransaction'
+// import AddTransaction from './AddTransaction';
+
+import AddTransaction from './AddTransaction';
+// import AddTransaction from './AddTransaction';
 
 const Add = () => {
+
     return (
         <>
             <AuthNavBar />
@@ -19,7 +24,7 @@ const Add = () => {
                         <h1 className="h2">Dashboard</h1>
                     </div>
 
-                    <AddTransaction />
+                    <AddTransaction  />
                 </main>
             </div>
             </div>
