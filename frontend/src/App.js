@@ -16,7 +16,7 @@ import Profile from './components/main/profile/Profile'
 import { GlobalProvider } from './context/GlobalState';
 import './scss/App.scss';
 import NonAuthDashboard from './components/home/NonAuthDashboard';
-import Update from './components/main/transactions/Update';
+import Update from './components/main/update/Update';
 
 
 function App() {

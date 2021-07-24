@@ -65,7 +65,6 @@ export const GlobalProvider = ({ children }) => {
     async function updateTransaction(id, transaction) {
         const config =  {
             method: 'PUT',
-            mode: 'cors',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -77,7 +76,7 @@ export const GlobalProvider = ({ children }) => {
             console.log(res)
             dispatch({
                 type: 'UPDATE_TRANSACTION',
-                payload: res.data
+                payload: res
             })
         } catch (err) {
             dispatch({

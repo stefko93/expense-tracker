@@ -7,7 +7,6 @@ import { useHistory } from "react-router-dom";
 import { GlobalContext } from '../../../context/GlobalState';
 
 import numberWithCommas from '../../utils/Format';
-// import AddTransaction from '../add/AddTransaction';
 
 const Transaction = ({ transaction }) => {
     const history = useHistory();

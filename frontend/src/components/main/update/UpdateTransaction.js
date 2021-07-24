@@ -1,3 +1,4 @@
+/* eslint-disable react/button-has-type */
 /* eslint-disable no-shadow */
 /* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/label-has-associated-control */
@@ -14,11 +15,10 @@ const UpdateTransaction = ( ) => {
     // const history = useHistory();
 
     // const currentTransactionId = match.params.id;
-    console.log(transaction);
     
-    const [selectedText, setSelectedText] = useState('');
-    const [selectedAmount, setSelectedAmount] = useState('');
-    const [selectedDate, setSelectedDate] = useState('');
+    const [text, setText] = useState(transaction.text);
+    const [amount, setAmount] = useState(transaction.amount);
+    const [date, setDate] = useState(new Date());
 
     // useEffect(() => {
     //   const transactionId = transaction._id;
@@ -30,15 +30,16 @@ const UpdateTransaction = ( ) => {
       e.preventDefault();
   
       const newTransaction = {
-        selectedText,
-        selectedAmount: +selectedAmount,
-        selectedDate
+        text,
+        amount: +amount,
+        date,
       }
   
-      updateTransaction( newTransaction);   
+      updateTransaction(transaction._id, newTransaction);   
 
-      setSelectedText('');
-      setSelectedDate('');
+      setText('');
+      setAmount('');
+      setDate('');
     }
   
     return (
@@ -47,19 +48,19 @@ const UpdateTransaction = ( ) => {
         <form onSubmit={onSubmit}>
         <div className="form-control">
             <label htmlFor="text">Text</label>
-            <input type="text" value={selectedText} onChange={(e) => setSelectedText(e.target.value)} placeholder="Enter text..." />
+            <input type="text" value={text} onChange={(e) => setText(e.target.value)} placeholder="Enter text..." />
           </div>
           <div className="form-control">
             <label htmlFor="amount"
               >Amount <br />
               (negative - expense, positive - income)</label>
-            <input type="number" value={selectedAmount} onChange={(e) => setSelectedAmount(e.target.value)} placeholder="Enter amount..." />
+            <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="Enter amount..." />
           </div>
           <div className="form-control">
             <label htmlFor="date">Date</label>
-            <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)}  />
+            <input type="date" value={date} onChange={(e) => setDate(e.target.value)}  />
           </div>
-          <button type='button' className="btn btn-dark">Save</button>
+          <button className="btn btn-dark">Save</button>
         </form>
       </>
     )
