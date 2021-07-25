@@ -5,7 +5,7 @@ import User from '../models/User';
 import { validateLoginData, validateUserData } from '../utils';
 
 export const userService = {
-  async createUser(data) {
+  async registerUser(data) {
     try {
       const { error } = validateUserData(data);
       if (error) {
@@ -76,7 +76,6 @@ export const userService = {
         {
           email: user.email,
           _id: user._id,
-          role: user.role,
         },
         process.env.TOKEN_SECRET,
         {
@@ -86,8 +85,7 @@ export const userService = {
 
       return {
         status: 200,
-        email: user.email,
-        role: user.role,
+        user,
         token,
       };
     } catch (err) {

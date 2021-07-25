@@ -18,10 +18,6 @@ const userSchema = new mongoose.Schema({
     required: true,
     minLength: 8,
   },
-  role: {
-    type: String,
-    default: 'data-recorder',
-  },
 });
 
 export default mongoose.model('User', userSchema);

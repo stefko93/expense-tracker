@@ -11,9 +11,10 @@ router.use(express.json());
 
 router.post('/register', userController.registerUser);
 router.post('/login', userController.loginUser);
+router.post('/logout', userController.logoutUser);
 
 router.get('/users/:id', userController.getUserById);
-router.post('/users', userController.registerUser);
+router.post('/users', userController.loadUser);
 router.put('/users/:id', userController.updateUser);
 
 // router.get('/incomes', productController.getIncomes);
