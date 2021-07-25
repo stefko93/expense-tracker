@@ -1,11 +1,14 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 import validator from 'validator';
 
 import InputFieldSet from '../utils/InputFieldSet';
 
-const LoginForm = ({ user, setUser }) => {
+import { GlobalContext } from '../../context/GlobalState';
+
+const LoginForm = ({ user }) => {
+    const { getToken, loginUser} = useContext(GlobalContext);
     const [fieldValues, setFieldValues] = useState({
       email: '',
       password: '',
@@ -109,17 +112,17 @@ const LoginForm = ({ user, setUser }) => {
       }));
     }
   
-    const backend = {
-      protocol: 'http',
-      host: '127.0.0.1',
-      port: 5000,
-    };
+    // const backend = {
+    //   protocol: 'http',
+    //   host: '127.0.0.1',
+    //   port: 5000,
+    // };
   
-    const backendUrl = `${backend.protocol}://${backend.host}:${backend.port}`;
+    // const backendUrl = `${backend.protocol}://${backend.host}:${backend.port}`;
   
-    const endpoint = {
-      login: `${backendUrl}/api/login`,
-    };
+    // const endpoint = {
+    //   login: `${backendUrl}/api/login`,
+    // };
   
     async function handleSubmit(e) {
       e.preventDefault();
@@ -131,45 +134,46 @@ const LoginForm = ({ user, setUser }) => {
       const isValid = isFormValid();
   
       if (isValid) {
-        fetch(endpoint.login, {
-          method: 'POST',
-          mode: 'cors',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: fieldValues.email,
-            password: fieldValues.password,
-          }),
-        })
-          .then(res => res.json())
-          .then(res => {
-            if (res.status < 200 || res.status >= 300) {
-              throw new Error('Incorrect email or password.');
-            } else {
-              localStorage.setItem(
-                'user',
-                JSON.stringify(res.user)
-              );
-              setFieldValues({
-                email: '',
-                password: '',
-              });
-              setFormAlertText('');
-              setFormAlertType('');
-              setUser(res.user);
-            }
-          })
-          .catch(error => {
-            setFormWasValidated(false);
-            setFormAlertText(error.message);
-            setFormAlertType('danger');
-            setFieldValues({
-              email: '',
-              password: '',
-            });
-          });
+        loginUser(fieldValues)
+        // fetch(endpoint.login, {
+        //   method: 'POST',
+        //   mode: 'cors',
+        //   headers: {
+        //     'Accept': 'application/json',
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify({
+        //     email: fieldValues.email,
+        //     password: fieldValues.password,
+        //   }),
+        // })
+        //   .then(res => res.json())
+        //   .then(res => {
+        //     if (res.status < 200 || res.status >= 300) {
+        //       throw new Error('Incorrect email or password.');
+        //     } else {
+        //       localStorage.setItem(
+        //         'user',
+        //         JSON.stringify(res.user.token)
+        //       );
+        //       setFieldValues({
+        //         email: '',
+        //         password: '',
+        //       });
+        //       setFormAlertText('');
+        //       setFormAlertType('');
+        //       setUser(res.user);
+        //     }
+        //   })
+        //   .catch(error => {
+        //     setFormWasValidated(false);
+        //     setFormAlertText(error.message);
+        //     setFormAlertType('danger');
+        //     setFieldValues({
+        //       email: '',
+        //       password: '',
+        //     });
+        //   });
       }
       setFormWasValidated(true);
       setFormAlertText('');
@@ -184,6 +188,7 @@ const LoginForm = ({ user, setUser }) => {
     if (user) {
       return <Redirect to="/dashboard"/>;
     }
+    if (getToken()) return <Redirect to='/dashboard' />;
   
     return (
       <main className="d-flex justify-content-center">

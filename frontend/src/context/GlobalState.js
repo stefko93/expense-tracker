@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable react/prop-types */
 import React, { createContext, useReducer } from 'react';
+import jwtDecode from "jwt-decode";
 
 import AppReducer from './AppReducer';
 
@@ -18,7 +19,16 @@ export const GlobalProvider = ({ children }) => {
     const [state, dispatch] = useReducer(AppReducer, initialState);
 
     const getToken = () => {
-        return localStorage.getItem('token');
+      return localStorage.getItem('token');
+    }
+
+   const getCurrentUser = () => {
+        try {
+          const jwt = localStorage.getItem('token');
+          return jwtDecode(jwt);
+        } catch (ex) {
+          return null;
+        }
       }
 
     async function getTransactions() {
@@ -73,7 +83,6 @@ export const GlobalProvider = ({ children }) => {
         }
         try {
             const res = await fetch(`http://localhost:5000/api/transactions/${id}`, config)
-            console.log(res)
             dispatch({
                 type: 'UPDATE_TRANSACTION',
                 payload: res
@@ -113,17 +122,114 @@ export const GlobalProvider = ({ children }) => {
         }
     }
 
+    async function registerUser(user) {
+        const config =  {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        }
+        try {
+          const res = await fetch('http://localhost:5000/api/register', config);
+          dispatch({
+            type: 'REGISTER_USER',
+            payload: res
+          });
+        } catch (err) {
+          dispatch({
+            type: 'LOGIN_ERROR',
+            payload: err.response.data
+          });
+        }
+      }
+    
+      async function loginUser(user) {
+        const config =  {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(user)
+        }
+        try {
+          const res = await fetch('http://localhost:5000/api/login', config).then((response) => response.json());     
+          dispatch({
+            type: 'LOGIN_USER',
+            // res.data = { success: , token: , user: { id: , name: , email: }}
+            payload: res.user
+          });
+        } catch (err) {
+          dispatch({
+            type: 'LOGIN_ERROR',
+            payload: err.response.data
+          });
+        }
+      }
+    
+      async function loadUser() {
+        try {
+          const res = await fetch('http://localhost:5000/api/users').then((response) => response.json());
+          dispatch({
+            type: 'LOAD_USER',
+            payload: res.data
+          });
+        } catch (err) {
+          dispatch({
+            type: 'LOGIN_ERROR',
+            payload: err.response
+          });
+        }
+      }
+    
+      async function updateUser(id, user) {
+        const config =  {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        }
+        try {
+          const res = await fetch(`http://localhost:5000/api/users/${id}`, config);
+          dispatch({
+            type: 'UPDATE_USER',
+            payload: res,
+          });
+        } catch (err) {
+          dispatch({
+            type: 'LOGIN_ERROR',
+            payload: err.response
+          });
+        }
+      }
+    
+      function logoutUser() {
+        dispatch({
+          type: 'LOGOUT_USER',
+        });
+      }
+
     return(<GlobalContext.Provider value={{
         token: state.token,
         users: state.users,
         transactions: state.transactions,
         error: state.error,
         loading: state.loading,
-        getToken,
         getTransactions,
         deleteTransaction,
         updateTransaction,
-        addTransaction
+        addTransaction,
+        registerUser,
+        loginUser,
+        loadUser,
+        updateUser,
+        logoutUser,
+        getToken,
+        getCurrentUser,
     }}>
         { children }
     </GlobalContext.Provider>);

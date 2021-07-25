@@ -43,7 +43,53 @@ const AppReducer = (state, action) => {
                 return {
                     ...state,
                     error: action.payload
-                }    
+                    }  
+                    
+        case 'REGISTER_USER':
+        case 'LOGIN_USER':
+            localStorage.setItem('token', action.payload.token);
+            return {
+                ...state,
+                token: action.payload.token,
+                // users: { success: , token: , user: { id: , name: , email: }}
+                users: action.payload,
+            }
+
+        case 'UPDATE_USER':
+            const { success, user } = action.payload;
+            return {
+                ...state,
+                // users: { success: , user: { id: , name: , email: }}
+                // users: action.payload,
+                users: { success, user },
+            }
+
+        case 'LOAD_USER':
+            const token = localStorage.getItem('token');
+            return {
+                ...state,
+                token,
+                loading: false,
+                users: action.payload,
+            }
+
+        case 'LOGOUT_USER':
+            localStorage.removeItem("token");
+            window.location = '/login';
+            return {
+                ...state,
+                token: null,
+                users: null,
+                loading: false,
+            }
+
+        case 'LOGIN_ERROR':
+            // window.location = '/404';
+            return {
+            ...state,
+            error: action.payload
+            }
+    
         default:
             return state;
     }
