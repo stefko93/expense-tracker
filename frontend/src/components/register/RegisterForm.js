@@ -1,11 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import { Redirect } from "react-router-dom";
 
 import validator from 'validator';
 
 import InputFieldSet from '../utils/InputFieldSet';
 
+import { GlobalContext } from '../../context/GlobalState';
+
 const RegisterForm = () => {
+  const { registerUser, error } = useContext(GlobalContext);
     const [fieldValues, setFieldValues] = useState({
       firstName: "",
       lastName: "",
@@ -112,18 +115,27 @@ const RegisterForm = () => {
       return isValid;
     }
   
-    const backend = {
-      protocol: 'http',
-      host: '127.0.0.1',
-      port: 5000,
-    };
+    // const backend = {
+    //   protocol: 'http',
+    //   host: '127.0.0.1',
+    //   port: 5000,
+    // };
   
-    const backendUrl = `${backend.protocol}://${backend.host}:${backend.port}`;
+    // const backendUrl = `${backend.protocol}://${backend.host}:${backend.port}`;
   
-    const endpoint = {
-      register: `${backendUrl}/api/register`,
-    };
+    // const endpoint = {
+    //   register: `${backendUrl}/api/register`,
+    // };
   
+    useEffect(() => {
+      if (error) {
+        console.log(error);
+        setFormAlertType('danger');
+        setFormAlertText(error);
+        // setIsRegisterSuccess(false)
+      } 
+    }, [error])
+
     function handleSubmit(e) {
       e.preventDefault();
   
@@ -134,51 +146,63 @@ const RegisterForm = () => {
       const isValid = isFormValid();
   
       if (isValid) {
-        fetch(endpoint.register, {
-          method: 'POST',
-          mode: 'cors',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            firstName: fieldValues.firstName,
-            lastName: fieldValues.lastName,
-            email: fieldValues.email,
-            password: fieldValues.password
-          })
-        })
-          .then((response) => {
-            if (response.status < 200 || response.status >= 300) {
-              const err = new Error();
-              err.response = response;
-              throw err;
-            }
-            if (response.status === 204) {
-              setFormWasValidated(true);
-              setFormAlertText('');
-              setFormAlertType('');
-              setIsRegisterSuccess(true);
-            }
-          })
-          .catch((error) => {
-            if (error.response) {
-              error.response.json().then(data => {
-                setFormWasValidated(false);
-                setFormAlertText(data.error);
-                setFormAlertType('danger');
-                setIsRegisterSuccess(false);
-              })
-            } else {
-              setFormWasValidated(false);
-              setFormAlertText("unknown error");
-              setFormAlertType('danger');
-              setIsRegisterSuccess(false);
-            }
-          })
+        registerUser(fieldValues)
+        if(registerUser(fieldValues)) {
+          setFormWasValidated(true);
+          setFormAlertText('');
+          setFormAlertType('');
+          setIsRegisterSuccess(true)
+        }
+        
+        // setIsRegisterSuccess(true);
+
+        // fetch(endpoint.register, {
+        //   method: 'POST',
+        //   mode: 'cors',
+        //   headers: {
+        //     'Accept': 'application/json',
+        //     'Content-Type': 'application/json'
+        //   },
+        //   body: JSON.stringify({
+        //     firstName: fieldValues.firstName,
+        //     lastName: fieldValues.lastName,
+        //     email: fieldValues.email,
+        //     password: fieldValues.password
+        //   })
+        // })
+        //   .then((response) => {
+        //     if (response.status < 200 || response.status >= 300) {
+        //       const err = new Error();
+        //       err.response = response;
+        //       throw err;
+        //     }
+        //     if (response.status === 204) {
+        //       setFormWasValidated(true);
+        //       setFormAlertText('');
+        //       setFormAlertType('');
+        //       setIsRegisterSuccess(true);
+        //     }
+        //   })
+        //   .catch((error) => {
+        //     if (error.response) {
+        //       error.response.json().then(data => {
+        //         setFormWasValidated(false);
+        //         setFormAlertText(data.error);
+        //         setFormAlertType('danger');
+        //         setIsRegisterSuccess(false);
+        //       })
+        //     } else {
+        //       setFormWasValidated(false);
+        //       setFormAlertText("unknown error");
+        //       setFormAlertType('danger');
+        //       setIsRegisterSuccess(false);
+        //     }
+        //   })
       }
     }
   
+
+
     function handleInputChange(e) {
       const { value } = e.target;
       const fieldName = e.target.name;
@@ -196,11 +220,12 @@ const RegisterForm = () => {
       const { name } = e.target;
       validateField(name);
     }
-  
+
     if (isRegisterSuccess) {
       return <Redirect to="/login" />;
     }
-  
+    // if (getToken()) return <Redirect to='/login' />;
+
     return (
       <main className="d-flex justify-content-center text-center">
         

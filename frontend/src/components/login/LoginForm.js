@@ -7,8 +7,8 @@ import InputFieldSet from '../utils/InputFieldSet';
 
 import { GlobalContext } from '../../context/GlobalState';
 
-const LoginForm = ({ user }) => {
-    const { getToken, loginUser} = useContext(GlobalContext);
+const LoginForm = () => {
+    const { getToken, getCurrentUser, loginUser} = useContext(GlobalContext);
     const [fieldValues, setFieldValues] = useState({
       email: '',
       password: '',
@@ -19,6 +19,7 @@ const LoginForm = ({ user }) => {
       password: '',
     });
 
+    const [isLoginSuccess, setIsLoginSuccess] = useState(false);
     const [formWasValidated, setFormWasValidated] = useState(false);
   
     const references = {
@@ -112,18 +113,6 @@ const LoginForm = ({ user }) => {
       }));
     }
   
-    // const backend = {
-    //   protocol: 'http',
-    //   host: '127.0.0.1',
-    //   port: 5000,
-    // };
-  
-    // const backendUrl = `${backend.protocol}://${backend.host}:${backend.port}`;
-  
-    // const endpoint = {
-    //   login: `${backendUrl}/api/login`,
-    // };
-  
     async function handleSubmit(e) {
       e.preventDefault();
   
@@ -135,6 +124,12 @@ const LoginForm = ({ user }) => {
   
       if (isValid) {
         loginUser(fieldValues)
+        if(loginUser(fieldValues)) {
+          setFormWasValidated(true);
+          setFormAlertText('');
+          setFormAlertType('');
+          setIsLoginSuccess(true)
+        }
         // fetch(endpoint.login, {
         //   method: 'POST',
         //   mode: 'cors',
@@ -185,11 +180,16 @@ const LoginForm = ({ user }) => {
       validateField(fieldName);
     }
   
-    if (user) {
-      return <Redirect to="/dashboard"/>;
-    }
-    if (getToken()) return <Redirect to='/dashboard' />;
+  //  if (users) return <Redirect to='/dashboard' />;
+      // if (getToken()) return <Redirect to='/dashboard' />;
+
+      console.log(getCurrentUser())
+      console.log(getToken())
   
+      if (isLoginSuccess && getToken() && getCurrentUser() ) {
+        return <Redirect to="/dashboard" />;
+      }
+
     return (
       <main className="d-flex justify-content-center">
         

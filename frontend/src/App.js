@@ -38,13 +38,13 @@ function App() {
         /> */}
 
           
-          <Route path="/dashboard"><Dashboard /></Route>
-          <Route path="/add"><Add /></Route>
-          <Route path="/update"><Update /></Route>
-          <Route path="/transactions"><Transactions /></Route>
-          <Route path="/expenses"><Expenses /></Route>
-          <Route path="/incomes"><Incomes /></Route>
-          <Route path="/profile"><Profile /></Route>
+          <Route path="/dashboard" component={Dashboard}  />
+          <Route path="/add" component={Add} />
+          <Route path="/update" component={Update}  />
+          <Route path="/transactions" component={Transactions}  />
+          <Route path="/expenses" component={Expenses}  />
+          <Route path="/incomes" component={Incomes}  />
+          <Route path="/profile" component={Profile}  />
 
           <Route path="/">
             <NonAuthDashboard />

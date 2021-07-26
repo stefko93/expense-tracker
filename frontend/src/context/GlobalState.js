@@ -12,7 +12,6 @@ const initialState = {
     error: null,
     loading: true
 }
-
 export const GlobalContext = createContext(initialState);
 
 export const GlobalProvider = ({ children }) => {
@@ -30,6 +29,8 @@ export const GlobalProvider = ({ children }) => {
           return null;
         }
       }
+
+  // fetch.defaults.header.common["x-auth-token"] = getToken();
 
     async function getTransactions() {
         try {
@@ -126,13 +127,14 @@ export const GlobalProvider = ({ children }) => {
         const config =  {
             method: 'POST',
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`,
             },
             body: JSON.stringify(user)
         }
         try {
-          const res = await fetch('http://localhost:5000/api/register', config);
+          const res = await fetch('http://localhost:5000/api/register', config).then((response) => response.json());
+
           dispatch({
             type: 'REGISTER_USER',
             payload: res
@@ -140,7 +142,7 @@ export const GlobalProvider = ({ children }) => {
         } catch (err) {
           dispatch({
             type: 'LOGIN_ERROR',
-            payload: err.response.data
+            payload: err.response,
           });
         }
       }
@@ -149,22 +151,22 @@ export const GlobalProvider = ({ children }) => {
         const config =  {
             method: 'POST',
             headers: {
-                'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${getToken()}`
             },
             body: JSON.stringify(user)
         }
         try {
           const res = await fetch('http://localhost:5000/api/login', config).then((response) => response.json());     
+          console.log(getToken())
           dispatch({
             type: 'LOGIN_USER',
-            // res.data = { success: , token: , user: { id: , name: , email: }}
-            payload: res.user
+            payload: res
           });
         } catch (err) {
           dispatch({
             type: 'LOGIN_ERROR',
-            payload: err.response.data
+            payload: err.response
           });
         }
       }
@@ -188,7 +190,6 @@ export const GlobalProvider = ({ children }) => {
         const config =  {
             method: 'PUT',
             headers: {
-                'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(user)
@@ -200,6 +201,7 @@ export const GlobalProvider = ({ children }) => {
             payload: res,
           });
         } catch (err) {
+          console.log(err.response)
           dispatch({
             type: 'LOGIN_ERROR',
             payload: err.response

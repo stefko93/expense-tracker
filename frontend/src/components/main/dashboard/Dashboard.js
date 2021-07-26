@@ -10,7 +10,7 @@ import IncomeExpenses from './IncomeExpenses';
 import Adder from './Adder';
 
 
-export default function Dashboard({user, setUser, logOut}) {
+export default function Dashboard() {
   return (
     <>
       <AuthNavBar />
@@ -25,9 +25,9 @@ export default function Dashboard({user, setUser, logOut}) {
               <h1 className="h2">Dashboard</h1>
             </div>
 
-            <Balance user={user} setUser={setUser} logOut={logOut} />
-            <IncomeExpenses user={user} setUser={setUser} logOut={logOut} />
-            <Adder user={user} setUser={setUser} logOut={logOut} />
+            <Balance />
+            <IncomeExpenses />
+            <Adder  />
 
           </main>
           </div>
