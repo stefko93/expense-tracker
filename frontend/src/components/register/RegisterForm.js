@@ -150,52 +150,13 @@ const RegisterForm = () => {
           setFormAlertText('');
           setFormAlertType('');
           setIsRegisterSuccess(true)
-        }
-        
-        // setIsRegisterSuccess(true);
+        } else {
+              setFormWasValidated(false);
+              setFormAlertText("unknown error");
+              setFormAlertType('danger');
+              setIsRegisterSuccess(false);
+          }
 
-        // fetch(endpoint.register, {
-        //   method: 'POST',
-        //   mode: 'cors',
-        //   headers: {
-        //     'Accept': 'application/json',
-        //     'Content-Type': 'application/json'
-        //   },
-        //   body: JSON.stringify({
-        //     firstName: fieldValues.firstName,
-        //     lastName: fieldValues.lastName,
-        //     email: fieldValues.email,
-        //     password: fieldValues.password
-        //   })
-        // })
-        //   .then((response) => {
-        //     if (response.status < 200 || response.status >= 300) {
-        //       const err = new Error();
-        //       err.response = response;
-        //       throw err;
-        //     }
-        //     if (response.status === 204) {
-        //       setFormWasValidated(true);
-        //       setFormAlertText('');
-        //       setFormAlertType('');
-        //       setIsRegisterSuccess(true);
-        //     }
-        //   })
-        //   .catch((error) => {
-        //     if (error.response) {
-        //       error.response.json().then(data => {
-        //         setFormWasValidated(false);
-        //         setFormAlertText(data.error);
-        //         setFormAlertType('danger');
-        //         setIsRegisterSuccess(false);
-        //       })
-        //     } else {
-        //       setFormWasValidated(false);
-        //       setFormAlertText("unknown error");
-        //       setFormAlertType('danger');
-        //       setIsRegisterSuccess(false);
-        //     }
-        //   })
       }
     }
   

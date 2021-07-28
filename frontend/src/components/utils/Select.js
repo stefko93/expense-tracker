@@ -2,11 +2,11 @@
 /* eslint-disable react/prop-types */
 export default function Select(
     {
-      errors, fieldValues, handleInputChange, handleInputBlur, type, name, labelText, required, reference
+      errors, fieldValues, handleInputChange, handleInputBlur, type, name, labelText, required, reference, options
     })
   
     { 
-    const options=["expense", "income"]
+    
     
     return (
       <div className={`mb-3 ${errors[name] !== '' ? "was-validated" : ""}`}>

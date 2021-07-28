@@ -182,8 +182,8 @@ const LoginForm = () => {
   //  if (users) return <Redirect to='/dashboard' />;
       // if (getToken()) return <Redirect to='/dashboard' />;
 
-      console.log(getCurrentUser())
-      console.log(getToken())
+      // console.log(getCurrentUser())
+      // console.log(getToken())
   
       if (isLoginSuccess && getToken() && getCurrentUser() ) {
         return <Redirect to="/dashboard" />;

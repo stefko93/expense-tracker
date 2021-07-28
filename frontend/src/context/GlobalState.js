@@ -10,7 +10,9 @@ const initialState = {
     transactions: [],
     token: null,
     error: null,
-    loading: true
+    loading: true,
+    incomes: [],
+    expenses: [],
 }
 export const GlobalContext = createContext(initialState);
 
@@ -32,10 +34,59 @@ export const GlobalProvider = ({ children }) => {
 
   // fetch.defaults.header.common["x-auth-token"] = getToken();
 
+  async function getIncomes() {
+    const config =  {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${await getToken()}`
+      }
+  }
+      try {
+          const res = await fetch('http://localhost:5000/api/incomes', config).then((response) => response.json())
+          
+          dispatch({
+              type: 'GET_INCOMES',
+              payload: res.data
+            });
+      } catch (err) {
+          dispatch({
+              type: 'TRANSACTION_ERROR',
+              payload: err.response.data.error
+            });
+      }
+  }
+
+  async function getExpenses() {
+    const config =  {
+      method: 'GET',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${await getToken()}`
+      }
+  }
+      try {
+          const res = await fetch('http://localhost:5000/api/expenses', config).then((response) => response.json())
+
+          dispatch({
+              type: 'GET_EXPENSES',
+              payload: res.data
+            });
+      } catch (err) {
+          dispatch({
+              type: 'TRANSACTION_ERROR',
+              payload: err.response.data.error
+            });
+      }
+  }
+
     async function getTransactions() {
       const config =  {
-        method: 'POST',
+        method: 'GET',
         headers: {
+            'Accept': 'application/json',
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${await getToken()}`
         }
@@ -103,15 +154,15 @@ export const GlobalProvider = ({ children }) => {
                 payload: err.response.data.error
               });
         }
-        
+
     }
 
-    function resetTransaction() {
-      dispatch({
-        type: 'RESET_TRANSACTION',
-      })
-    }
-  
+    // function resetTransaction() {
+    //   dispatch({
+    //     type: 'RESET_TRANSACTION',
+    //   })
+    // }
+
 
     async function addTransaction(transaction) {
         const config =  {
@@ -122,12 +173,12 @@ export const GlobalProvider = ({ children }) => {
                 'Authorization': `Bearer ${await getToken()}`
             },
             body: JSON.stringify(transaction)
-  
+
         }
 
         try {
             const res = await fetch('http://localhost:5000/api/transactions', config)
-            
+
             dispatch({
                 type: 'ADD_TRANSACTION',
                 payload: res.data
@@ -162,7 +213,7 @@ export const GlobalProvider = ({ children }) => {
           });
         }
       }
-    
+
       async function loginUser(user) {
         const config =  {
             method: 'POST',
@@ -173,7 +224,7 @@ export const GlobalProvider = ({ children }) => {
             body: JSON.stringify(user)
         }
         try {
-          const res = await fetch('http://localhost:5000/api/login', config).then((response) => response.json());     
+          const res = await fetch('http://localhost:5000/api/login', config).then((response) => response.json());
           console.log(getToken())
           dispatch({
             type: 'LOGIN_USER',
@@ -186,7 +237,7 @@ export const GlobalProvider = ({ children }) => {
           });
         }
       }
-    
+
       async function loadUser() {
         try {
           const res = await fetch('http://localhost:5000/api/users').then((response) => response.json());
@@ -201,7 +252,7 @@ export const GlobalProvider = ({ children }) => {
           });
         }
       }
-    
+
       async function updateUser(id, user) {
         const config =  {
             method: 'PUT',
@@ -224,7 +275,7 @@ export const GlobalProvider = ({ children }) => {
           });
         }
       }
-    
+
       function logoutUser() {
         dispatch({
           type: 'LOGOUT_USER',
@@ -237,11 +288,15 @@ export const GlobalProvider = ({ children }) => {
         transactions: state.transactions,
         error: state.error,
         loading: state.loading,
+        incomes: state.incomes,
+        expenses: state.expenses,
+        getIncomes,
+        getExpenses,
         getTransactions,
         deleteTransaction,
         updateTransaction,
         addTransaction,
-        resetTransaction,
+        // resetTransaction,
         registerUser,
         loginUser,
         loadUser,

@@ -1,7 +1,18 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+/* eslint-disable no-unused-vars */
+import React, {useContext} from 'react'
+import { Redirect, Link } from 'react-router-dom';
+
+import { GlobalContext } from '../../context/GlobalState';
 
 const SideBar = () => {
+  let { users } = useContext(GlobalContext);
+
+    function logoutUser() {
+      localStorage.clear();
+      users = [];
+    }
+
+
     return (
         <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse" style={{}}>
         <div className="position-sticky pt-3">
@@ -43,7 +54,7 @@ const SideBar = () => {
                             </Link>
           </li>
           <li className="nav-item">
-            <Link to="/logout" className="nav-link link-dark">
+            <Link to="/logout" className="nav-link link-dark" onClick={logoutUser}>
                             <svg className="bi me-2" width="16" height="16"><i className="bi bi-box-arrow-in-left" /></svg>
                             Logout
                             </Link>

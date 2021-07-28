@@ -3,6 +3,20 @@
 /* eslint-disable import/no-anonymous-default-export */
 const AppReducer = (state, action) => {
     switch(action.type) {
+        case 'GET_INCOMES': {
+            return {
+                ...state,
+                loading: false,
+                incomes: action.payload
+            }
+        }
+        case 'GET_EXPENSES': {
+            return {
+                ...state,
+                loading: false,
+                expenses: action.payload
+            }
+        }
         case 'GET_TRANSACTIONS': {
             return {
                 ...state,
@@ -39,12 +53,12 @@ const AppReducer = (state, action) => {
                 ...state,
                 transactions: [...state.transactions, action.payload]
             }
-        case 'RESET_TRANSACTION':
-            return {
-                 ...state,
-                loading: true,
-                transactions: []
-            };
+        // case 'RESET_TRANSACTION':
+        //     return {
+        //          ...state,
+        //         loading: true,
+        //         transactions: []
+        //     };
         case 'TRANSACTION_ERROR':
                 return {
                     ...state,

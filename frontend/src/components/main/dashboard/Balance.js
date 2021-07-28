@@ -7,19 +7,14 @@ import { GlobalContext } from '../../../context/GlobalState';
 import numberWithCommas from '../../utils/Format';
 
 export default function Balance() {
-    const { transactions, getTransactions, resetTransaction } = useContext(GlobalContext);
-
-    if( transactions && transactions.length !== 0 ) {
-        const amounts = transactions.map(transition => transition.amount);
-        const total = amounts.reduce((acc, item) => (acc += item), 0);
-    }
-    const total = '0';
+    const { transactions, getTransactions } = useContext(GlobalContext);
 
     useEffect(() => {
-        resetTransaction()
-        console.log(resetTransaction)
         getTransactions();
     }, [])
+
+    const amounts = transactions.map(transition => transition.amount);
+    const total = amounts.reduce((acc, item) => (acc += item), 0);
 
 
     return (
@@ -28,7 +23,7 @@ export default function Balance() {
                 <h4>Your Balance</h4>
             </div>
             <div className="d-flex justify-content-center">
-                <h1>{numberWithCommas(total)}Ft</h1>
+                {transactions && <h1>{numberWithCommas(total)}Ft</h1>}
             </div>
         </div>
     )

@@ -17,6 +17,8 @@ import { GlobalProvider } from './context/GlobalState';
 import './scss/App.scss';
 import NonAuthDashboard from './components/home/NonAuthDashboard';
 import Update from './components/main/update/Update';
+import ProtectedRoute from './components/utils/ProtectedRoute';
+import Logout from './components/logout/Logout';
 
 
 function App() {
@@ -28,23 +30,15 @@ function App() {
         <Switch>
           <Route path="/register"><Register /></Route>
           <Route path="/login"><Login /></Route>
+          <Route path='/logout' ><Logout /></Route>
           
-          {/* <Route exact path="/">          
-              {(user === null || user === undefined) && <NonAuthDashboard/>} 
-          </Route>
-        <ProtectedRoute
-          path="/dashboard"
-          component={() => <Dashboard setUser={setUser} logOut={logOut}/>}
-        /> */}
-
-          
-          <Route path="/dashboard" component={Dashboard}  />
-          <Route path="/add" component={Add} />
-          <Route path="/update" component={Update}  />
-          <Route path="/transactions" component={Transactions}  />
-          <Route path="/expenses" component={Expenses}  />
-          <Route path="/incomes" component={Incomes}  />
-          <Route path="/profile" component={Profile}  />
+          <ProtectedRoute path="/dashboard" component={Dashboard}  />
+          <ProtectedRoute path="/add" component={Add} />
+          <ProtectedRoute path="/update" component={Update}  />
+          <ProtectedRoute path="/transactions" component={Transactions}  />
+          <ProtectedRoute path="/expenses" component={Expenses}  />
+          <ProtectedRoute path="/incomes" component={Incomes}  />
+          <ProtectedRoute path="/profile" component={Profile}  />
 
           <Route path="/">
             <NonAuthDashboard />

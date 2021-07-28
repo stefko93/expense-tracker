@@ -22,16 +22,17 @@ const Expenses = () => {
         <ExpensesChart />
       </div>
         
-      <h2>Section title</h2>
+      <h2>Details</h2>
       <div className="table-responsive">
         <table className="table table-striped table-sm">
           <thead>
             <tr>
-              <th>#</th>
-              <th>Header</th>
-              <th>Header</th>
-              <th>Header</th>
-              <th>Header</th>
+              <th>Nr.</th>
+              <th>Detail</th>
+              <th>Type</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Operations</th>
             </tr>
           </thead>
           <tbody>
