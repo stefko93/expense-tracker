@@ -33,8 +33,15 @@ export const GlobalProvider = ({ children }) => {
   // fetch.defaults.header.common["x-auth-token"] = getToken();
 
     async function getTransactions() {
+      const config =  {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${await getToken()}`
+        }
+    }
         try {
-            const res = await fetch('http://localhost:5000/api/transactions').then((response) => response.json())
+            const res = await fetch('http://localhost:5000/api/transactions', config).then((response) => response.json())
 
             dispatch({
                 type: 'GET_TRANSACTIONS',
@@ -54,7 +61,8 @@ export const GlobalProvider = ({ children }) => {
             mode: 'cors',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${await getToken()}`
             },
             body: JSON.stringify()
         }
@@ -78,7 +86,8 @@ export const GlobalProvider = ({ children }) => {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${await getToken()}`
             },
             body: JSON.stringify(transaction)
         }
@@ -97,12 +106,20 @@ export const GlobalProvider = ({ children }) => {
         
     }
 
+    function resetTransaction() {
+      dispatch({
+        type: 'RESET_TRANSACTION',
+      })
+    }
+  
+
     async function addTransaction(transaction) {
         const config =  {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${await getToken()}`
             },
             body: JSON.stringify(transaction)
   
@@ -128,7 +145,6 @@ export const GlobalProvider = ({ children }) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getToken()}`,
             },
             body: JSON.stringify(user)
         }
@@ -152,7 +168,7 @@ export const GlobalProvider = ({ children }) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getToken()}`
+                'Authorization': `Bearer ${await getToken()}`
             },
             body: JSON.stringify(user)
         }
@@ -225,6 +241,7 @@ export const GlobalProvider = ({ children }) => {
         deleteTransaction,
         updateTransaction,
         addTransaction,
+        resetTransaction,
         registerUser,
         loginUser,
         loadUser,

@@ -39,6 +39,12 @@ const AppReducer = (state, action) => {
                 ...state,
                 transactions: [...state.transactions, action.payload]
             }
+        case 'RESET_TRANSACTION':
+            return {
+                 ...state,
+                loading: true,
+                transactions: []
+            };
         case 'TRANSACTION_ERROR':
                 return {
                     ...state,
@@ -49,7 +55,7 @@ const AppReducer = (state, action) => {
             // localStorage.setItem('token', action.payload.token);
             return {
                 ...state,
-                token: action.payload.token,
+                // token: action.payload.token,
                 // users: { success: , token: , user: { id: , name: , email: }}
                 users: action.payload,
              }

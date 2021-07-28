@@ -129,7 +129,6 @@ const RegisterForm = () => {
   
     useEffect(() => {
       if (error) {
-        console.log(error);
         setFormAlertType('danger');
         setFormAlertText(error);
         // setIsRegisterSuccess(false)
@@ -146,7 +145,6 @@ const RegisterForm = () => {
       const isValid = isFormValid();
   
       if (isValid) {
-        registerUser(fieldValues)
         if(registerUser(fieldValues)) {
           setFormWasValidated(true);
           setFormAlertText('');

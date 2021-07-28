@@ -123,7 +123,6 @@ const LoginForm = () => {
       const isValid = isFormValid();
   
       if (isValid) {
-        loginUser(fieldValues)
         if(loginUser(fieldValues)) {
           setFormWasValidated(true);
           setFormAlertText('');

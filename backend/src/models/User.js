@@ -1,4 +1,6 @@
+/* eslint-disable func-names */
 import mongoose from 'mongoose';
+import jwt from 'jsonwebtoken';
 
 const userSchema = new mongoose.Schema({
   firstName: {
@@ -19,5 +21,16 @@ const userSchema = new mongoose.Schema({
     minLength: 8,
   },
 });
+
+userSchema.methods.generateAuthToken = function () {
+  const token = jwt.sign(
+    { email: this.email, id: this.id },
+    process.env.TOKEN_SECRET,
+    {
+      expiresIn: '1day',
+    }
+  );
+  return token;
+};
 
 export default mongoose.model('User', userSchema);

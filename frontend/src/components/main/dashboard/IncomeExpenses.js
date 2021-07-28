@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-return-assign */
 /* eslint-disable no-param-reassign */
 import React, { useContext } from 'react';
@@ -8,10 +9,16 @@ import numberWithCommas from '../../utils/Format';
 export default function IncomeExpenses() {
     const { transactions } = useContext(GlobalContext);
 
-    const amounts = transactions.map(transaction => transaction.amount);
+    if( transactions && transactions.length !== 0 ){
+        const amounts = transactions.map(transaction => transaction.amount);
 
-    const income = amounts.filter(item => item > 0).reduce((acc, item) => (acc += item), 0);
-    const expense = amounts.filter(item => item < 0).reduce((acc, item) => (acc += item), 0) * -1;
+        const income = amounts.filter(item => item > 0).reduce((acc, item) => (acc += item), 0);
+        const expense = amounts.filter(item => item < 0).reduce((acc, item) => (acc += item), 0) * -1;
+    }
+
+    const income = 0;
+    const expense = 0;
+    
     
     return (
         <div className="container mb-5">

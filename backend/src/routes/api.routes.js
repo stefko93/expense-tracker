@@ -1,6 +1,7 @@
 import express from 'express';
 import { userController } from '../controllers/userController';
 import { transactionController } from '../controllers/transactionController';
+import auth from '../middlewares/auth';
 
 const cors = require('cors');
 
@@ -11,11 +12,10 @@ router.use(express.json());
 
 router.post('/register', userController.registerUser);
 router.post('/login', userController.loginUser);
-router.post('/logout', userController.logoutUser);
+// router.post('/logout', userController.logoutUser);
 
-router.get('/users/:id', userController.getUserById);
-router.post('/users', userController.loadUser);
-router.put('/users/:id', userController.updateUser);
+router.get('/user', auth, userController.loadUser);
+router.put('/users/:id', auth, userController.updateUser);
 
 // router.get('/incomes', productController.getIncomes);
 // router.post('/incomes', productController.createIncome);
@@ -27,9 +27,17 @@ router.put('/users/:id', userController.updateUser);
 // router.put('/expenses/:id', customerController.updateExpense);
 // router.delete('/expenses/:id', customerController.deleteExpense);
 
-router.get('/transactions', transactionController.getTransactions);
-router.post('/transactions', transactionController.addTransaction);
-router.put('/transactions/:id', transactionController.updateTransactionById);
-router.delete('/transactions/:id', transactionController.deleteTransaction);
+router.get('/transactions', auth, transactionController.getTransactions);
+router.post('/transactions', auth, transactionController.addTransaction);
+router.put(
+  '/transactions/:id',
+  auth,
+  transactionController.updateTransactionById
+);
+router.delete(
+  '/transactions/:id',
+  auth,
+  transactionController.deleteTransaction
+);
 
 export default router;
