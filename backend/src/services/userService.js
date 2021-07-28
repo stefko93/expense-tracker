@@ -34,22 +34,9 @@
 //       });
 //       await user.save();
 
-//       const token = jwt.sign(
-//         {
-//           email: user.email,
-//           _id: user._id,
-//         },
-//         process.env.TOKEN_SECRET,
-//         {
-//           expiresIn: '1day',
-//         }
-//       );
-
 //       return {
 //         status: 204,
 //         message: 'User created',
-//         user,
-//         token,
 //       };
 //     } catch (err) {
 //       return {
@@ -92,7 +79,7 @@
 //         },
 //         process.env.TOKEN_SECRET,
 //         {
-//           expiresIn: process.env.TOKEN_EXPIRY,
+//           expiresIn: '1day',
 //         }
 //       );
 

@@ -1,5 +1,7 @@
 import express from 'express';
 import { userController } from '../controllers/userController';
+import { expenseController } from '../controllers/expenseController';
+import { incomeController } from '../controllers/incomeController';
 import { transactionController } from '../controllers/transactionController';
 import auth from '../middlewares/auth';
 
@@ -17,12 +19,12 @@ router.post('/login', userController.loginUser);
 router.get('/user', auth, userController.loadUser);
 router.put('/users/:id', auth, userController.updateUser);
 
-// router.get('/incomes', productController.getIncomes);
-// router.post('/incomes', productController.createIncome);
+router.get('/incomes', incomeController.getIncomes);
+// router.post('/incomes', incomeController.getIncomes);
 // router.put('/incomes/:id', productController.updateIncome);
 // router.delete('/incomes/:id', productController.deleteIncome);
 
-// router.get('/expenses', customerController.getExpenses);
+router.get('/expenses', expenseController.getExpenses);
 // router.post('/expenses', customerController.createExpense);
 // router.put('/expenses/:id', customerController.updateExpense);
 // router.delete('/expenses/:id', customerController.deleteExpense);

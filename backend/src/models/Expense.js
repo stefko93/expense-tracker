@@ -1,18 +1,19 @@
 import mongoose from 'mongoose';
 
 const expenseSchema = new mongoose.Schema({
-  text: {
+  type: {
     type: String,
     trim: true,
-    required: [true, 'Please add some text'],
+    required: [true, 'Please add type'],
   },
   amount: {
     type: Number,
-    required: [true, 'Please add a positive or negative number'],
+    required: [true, 'Please add a number'],
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
+  color: {
+    type: String,
+    trim: true,
+    required: [true, 'Please add color'],
   },
 });
 

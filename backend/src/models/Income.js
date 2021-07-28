@@ -13,7 +13,7 @@ const incomeSchema = new mongoose.Schema({
   color: {
     type: String,
     trim: true,
-    required: [true, 'Please add description'],
+    required: [true, 'Please add color'],
   },
 });
 
