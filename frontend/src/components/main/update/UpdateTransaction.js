@@ -3,7 +3,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, {useState, useContext, useEffect, useRef} from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Redirect  } from 'react-router-dom';
 // import { Link, useHistory } from "react-router-dom";
 
 import { GlobalContext } from '../../../context/GlobalState';
@@ -23,10 +23,6 @@ const UpdateTransaction = ( ) => {
     
     const incomeTypes = incomes.map(income => income.type);
     const expenseTypes = expenses.map(expense => expense.type);
-    
-    // const [text, setText] = useState(transaction.text);
-    // const [amount, setAmount] = useState(transaction.amount);
-    // const [date, setDate] = useState(new Date());
 
     const [fieldValues, setFieldValues] = useState({
       type: transaction.type,
@@ -36,20 +32,16 @@ const UpdateTransaction = ( ) => {
       date: new Date()
     });
 
-    // useEffect(() => {
-    //   const transactionId = transaction._id;
-    //   const selectedTransaction = transactions.find(transaction => transaction._id === transactionId);
-    //   console.log(selectedTransaction)
-    // }, [transactions])
     const [errors, setErrors] = useState({
       type:"",
       category: '',
-      text: "",
+      detail: "",
       amount: "",
     });
-        
+
+
+    const [isUpdateSuccess, setIsUpdateSuccess] = useState(false);   
     const [formWasValidated, setFormWasValidated] = useState(false);
-    
     const [formAlertText, setFormAlertText] = useState('');
     const [formAlertType, setFormAlertType] = useState('');
 
@@ -124,6 +116,7 @@ const UpdateTransaction = ( ) => {
       return isValid;
     }
 
+
     const handleSubmit = e => {
       e.preventDefault();
 
@@ -135,18 +128,30 @@ const UpdateTransaction = ( ) => {
   
       if (isValid) {
       const newTransaction = {
-        ...fieldValues, 
-        amount: Number(fieldValues.amount)
+        type: fieldValues.type,
+        category: fieldValues.category,
+        detail: fieldValues.detail,
+        amount: (fieldValues.type) === "Expense" ? -Math.abs(fieldValues.amount) :  Math.abs(fieldValues.amount) ,
+        date: new Date(),
       }
-  
+
       updateTransaction(transaction._id, newTransaction);   
         setFormWasValidated(true);
         setFormAlertText('');
         setFormAlertType('');
+        setIsUpdateSuccess(true);
+        setFieldValues({
+          type:"",
+          category: '',
+          detail: "",
+          amount: "",
+          date: new Date()
+        })
     } else {
       setFormWasValidated(false);
       setFormAlertText("unknown error");
       setFormAlertType('danger');
+      setIsUpdateSuccess(false);
     }
 }
   
@@ -166,6 +171,10 @@ const UpdateTransaction = ( ) => {
     function handleInputBlur(e) {
       const { name } = e.target;
       validateField(name);
+    }
+
+    if(isUpdateSuccess){
+      <Redirect to="/transactions" />
     }
 
     const options=["Expense", "Income"]

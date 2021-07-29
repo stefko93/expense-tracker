@@ -53,12 +53,6 @@ const AppReducer = (state, action) => {
                 ...state,
                 transactions: [...state.transactions, action.payload]
             }
-        // case 'RESET_TRANSACTION':
-        //     return {
-        //          ...state,
-        //         loading: true,
-        //         transactions: []
-        //     };
         case 'TRANSACTION_ERROR':
                 return {
                     ...state,
@@ -66,11 +60,8 @@ const AppReducer = (state, action) => {
                     }  
                     
         case 'REGISTER_USER':
-            // localStorage.setItem('token', action.payload.token);
             return {
                 ...state,
-                // token: action.payload.token,
-                // users: { success: , token: , user: { id: , name: , email: }}
                 users: action.payload,
              }
         case 'LOGIN_USER':
@@ -78,7 +69,6 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 token: action.payload.token,
-                // users: { success: , token: , user: { id: , name: , email: }}
                 users: action.payload,
              }
 
@@ -109,7 +99,6 @@ const AppReducer = (state, action) => {
             }
 
             case 'LOGIN_ERROR':
-                // window.location = '/404';
                 return {
                   ...state,
                   error: action.payload

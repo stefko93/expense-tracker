@@ -3,8 +3,9 @@
 /* eslint-disable no-param-reassign */
 import React, { useContext, useEffect  } from 'react';
 
-import { GlobalContext } from '../../../context/GlobalState';
 import numberWithCommas from '../../utils/Format';
+
+import { GlobalContext } from '../../../context/GlobalState';
 
 export default function Balance() {
     const { transactions, getTransactions } = useContext(GlobalContext);

@@ -1,6 +1,8 @@
-/* eslint-disable react/prop-types */
+
+/* eslint-disable no-unused-vars */
 import React, { useState, useRef, useContext } from 'react';
 import { Redirect } from 'react-router-dom';
+
 import validator from 'validator';
 
 import InputFieldSet from '../utils/InputFieldSet';
@@ -8,7 +10,8 @@ import InputFieldSet from '../utils/InputFieldSet';
 import { GlobalContext } from '../../context/GlobalState';
 
 const LoginForm = () => {
-    const { getToken, getCurrentUser, loginUser} = useContext(GlobalContext);
+    const { error, getToken, loginUser, getCurrentUser} = useContext(GlobalContext);
+
     const [fieldValues, setFieldValues] = useState({
       email: '',
       password: '',
@@ -21,15 +24,14 @@ const LoginForm = () => {
 
     const [isLoginSuccess, setIsLoginSuccess] = useState(false);
     const [formWasValidated, setFormWasValidated] = useState(false);
-  
+    const [formAlertText, setFormAlertText] = useState('');
+    const [formAlertType, setFormAlertType] = useState('');
+
     const references = {
       email: useRef(),
       password: useRef(),
     };
 
-    const [formAlertText, setFormAlertText] = useState('');
-    const [formAlertType, setFormAlertType] = useState('');
-  
     function isNotEmpty(value) {
       return value !== '';
     }
@@ -99,20 +101,7 @@ const LoginForm = () => {
       }
       return isValid;
     }
-  
-    function handleInputChange(e) {
-      const fieldValue = e.target.value;
-      const fieldName = e.target.name;
-      setFieldValues({
-        ...fieldValues,
-        [fieldName]: fieldValue,
-      });
-      setErrors(previousErrors => ({
-        ...previousErrors,
-        [fieldName]: '',
-      }));
-    }
-  
+
     async function handleSubmit(e) {
       e.preventDefault();
   
@@ -121,69 +110,40 @@ const LoginForm = () => {
       setFormWasValidated(false);
   
       const isValid = isFormValid();
-  
+
       if (isValid) {
-        if(loginUser(fieldValues)) {
-          setFormWasValidated(true);
-          setFormAlertText('');
-          setFormAlertType('');
-          setIsLoginSuccess(true)
+        loginUser(fieldValues);
+        setFormWasValidated(true);
+        setFormAlertText("");
+        setFormAlertType('');
+        setIsLoginSuccess(true)
+
+        if(error) {
+          setFormWasValidated(false);
+          setFormAlertText(error);
+          setFormAlertType('danger');
+          setIsLoginSuccess(false)
         }
-        // fetch(endpoint.login, {
-        //   method: 'POST',
-        //   mode: 'cors',
-        //   headers: {
-        //     'Accept': 'application/json',
-        //     'Content-Type': 'application/json',
-        //   },
-        //   body: JSON.stringify({
-        //     email: fieldValues.email,
-        //     password: fieldValues.password,
-        //   }),
-        // })
-        //   .then(res => res.json())
-        //   .then(res => {
-        //     if (res.status < 200 || res.status >= 300) {
-        //       throw new Error('Incorrect email or password.');
-        //     } else {
-        //       localStorage.setItem(
-        //         'user',
-        //         JSON.stringify(res.user.token)
-        //       );
-        //       setFieldValues({
-        //         email: '',
-        //         password: '',
-        //       });
-        //       setFormAlertText('');
-        //       setFormAlertType('');
-        //       setUser(res.user);
-        //     }
-        //   })
-        //   .catch(error => {
-        //     setFormWasValidated(false);
-        //     setFormAlertText(error.message);
-        //     setFormAlertType('danger');
-        //     setFieldValues({
-        //       email: '',
-        //       password: '',
-        //     });
-        //   });
       }
-      setFormWasValidated(true);
-      setFormAlertText('');
-      setFormAlertType('');
+    }
+
+    function handleInputChange(e) {
+        const fieldValue = e.target.value;
+        const fieldName = e.target.name;
+        setFieldValues({
+          ...fieldValues,
+          [fieldName]: fieldValue,
+        });
+        setErrors(previousErrors => ({
+          ...previousErrors,
+          [fieldName]: '',
+        }));
     }
   
     function handleInputBlur(e) {
       const fieldName = e.target.name;
       validateField(fieldName);
     }
-  
-  //  if (users) return <Redirect to='/dashboard' />;
-      // if (getToken()) return <Redirect to='/dashboard' />;
-
-      // console.log(getCurrentUser())
-      // console.log(getToken())
   
       if (isLoginSuccess && getToken() && getCurrentUser() ) {
         return <Redirect to="/dashboard" />;
@@ -218,9 +178,9 @@ const LoginForm = () => {
             required
           />
           <button type="submit" className="btn btn-dark">Login</button>
-          {formAlertText && 
-            <div className={`alert mt-3 alert-${formAlertType}`} role="alert">
-              {formAlertText}
+          {error && 
+            <div className="alert mt-3 alert-danger" role="alert">
+              {error}
             </div>
           }
         </form>

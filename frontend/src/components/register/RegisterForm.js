@@ -1,4 +1,6 @@
-import React, { useState, useRef, useContext, useEffect } from 'react';
+/* eslint-disable no-const-assign */
+/* eslint-disable no-unused-vars */
+import React, { useState, useRef, useContext } from 'react';
 import { Redirect } from "react-router-dom";
 
 import validator from 'validator';
@@ -8,7 +10,8 @@ import InputFieldSet from '../utils/InputFieldSet';
 import { GlobalContext } from '../../context/GlobalState';
 
 const RegisterForm = () => {
-  const { registerUser, error } = useContext(GlobalContext);
+  const { error, registerUser } = useContext(GlobalContext);
+  
     const [fieldValues, setFieldValues] = useState({
       firstName: "",
       lastName: "",
@@ -115,25 +118,6 @@ const RegisterForm = () => {
       return isValid;
     }
   
-    // const backend = {
-    //   protocol: 'http',
-    //   host: '127.0.0.1',
-    //   port: 5000,
-    // };
-  
-    // const backendUrl = `${backend.protocol}://${backend.host}:${backend.port}`;
-  
-    // const endpoint = {
-    //   register: `${backendUrl}/api/register`,
-    // };
-  
-    useEffect(() => {
-      if (error) {
-        setFormAlertType('danger');
-        setFormAlertText(error);
-        // setIsRegisterSuccess(false)
-      } 
-    }, [error])
 
     function handleSubmit(e) {
       e.preventDefault();
@@ -145,22 +129,19 @@ const RegisterForm = () => {
       const isValid = isFormValid();
   
       if (isValid) {
-        if(registerUser(fieldValues)) {
+          registerUser(fieldValues)
           setFormWasValidated(true);
           setFormAlertText('');
           setFormAlertType('');
-          setIsRegisterSuccess(true)
-        } else {
-              setFormWasValidated(false);
-              setFormAlertText("unknown error");
-              setFormAlertType('danger');
-              setIsRegisterSuccess(false);
-          }
-
+          setIsRegisterSuccess(true);
+        if(error) {
+          setFormWasValidated(false);
+          setFormAlertText(error);
+          setFormAlertType('danger');
+          setIsRegisterSuccess(false);
+        } 
       }
     }
-  
-
 
     function handleInputChange(e) {
       const { value } = e.target;
@@ -180,10 +161,10 @@ const RegisterForm = () => {
       validateField(name);
     }
 
-    if (isRegisterSuccess) {
-      return <Redirect to="/login" />;
+    if(isRegisterSuccess){
+      return <Redirect to="/register" />;
     }
-    // if (getToken()) return <Redirect to='/login' />;
+
 
     return (
       <main className="d-flex justify-content-center text-center">
@@ -238,9 +219,9 @@ const RegisterForm = () => {
   
           <button type="submit" className="btn btn-dark">Registrate</button>
   
-          {formAlertText &&
-            <div className={`alert mt-3 alert-${formAlertType}`} role="alert">
-              {formAlertText}
+          {error &&
+            <div className="alert mt-3 alert-danger" role="alert">
+              {error}
             </div>
           }
   

@@ -1,19 +1,33 @@
-import React from 'react'
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable array-callback-return */
+import React, { useContext, useEffect } from 'react'
 
 import AuthNavBar from '../../navbars/AuthNavBar';
 import SideBar from '../../utils/SideBar';
 import ExpensesChart from './ExpensesChart';
+import numberWithCommas from '../../utils/Format';
+import formatDate from '../../utils/FormatDate';
+
+import { GlobalContext } from '../../../context/GlobalState';
 
 const Expenses = () => {
+  const { transactions, getTransactions  } = useContext(GlobalContext);
+
+  useEffect(() => {
+      getTransactions();
+  }, [])
+
+    const expenseType = item => item.type === "Expense"
+    const expenseList = transactions.filter(expenseType);
+
     return (
-        <>
+      <div className='container-fluid'>
+        <div className="row">
         <AuthNavBar />
-        <div className='container-fluid'>
-            <div className="row">
             <SideBar />
 
     <main role="main" className="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-        <div className="chartjs-size-monitor"><div className="chartjs-size-monitor-expand"><div className="" /></div><div className="chartjs-size-monitor-shrink"><div className="" /></div></div>
+    <div className="chartjs-size-monitor"><div className="chartjs-size-monitor-expand"><div className="" /></div><div className="chartjs-size-monitor-shrink"><div className="" /></div></div>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 className="h2">Expenses</h1>
       </div>
@@ -21,140 +35,36 @@ const Expenses = () => {
       <div className="my-4 w-100 chartjs-render-monitor" id="myChart" width="1550" height="653" style={{display: 'flex', height: '523px', width: '1240px'}}>
         <ExpensesChart />
       </div>
-        
-      <h2>Details</h2>
-      <div className="table-responsive">
-        <table className="table table-striped table-sm">
-          <thead>
-            <tr>
-              <th>Nr.</th>
-              <th>Detail</th>
-              <th>Type</th>
-              <th>Amount</th>
-              <th>Date</th>
-              <th>Operations</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1,001</td>
-              <td>random</td>
-              <td>data</td>
-              <td>placeholder</td>
-              <td>text</td>
-            </tr>
-            <tr>
-              <td>1,002</td>
-              <td>placeholder</td>
-              <td>irrelevant</td>
-              <td>visual</td>
-              <td>layout</td>
-            </tr>
-            <tr>
-              <td>1,003</td>
-              <td>data</td>
-              <td>rich</td>
-              <td>dashboard</td>
-              <td>tabular</td>
-            </tr>
-            <tr>
-              <td>1,003</td>
-              <td>information</td>
-              <td>placeholder</td>
-              <td>illustrative</td>
-              <td>data</td>
-            </tr>
-            <tr>
-              <td>1,004</td>
-              <td>text</td>
-              <td>random</td>
-              <td>layout</td>
-              <td>dashboard</td>
-            </tr>
-            <tr>
-              <td>1,005</td>
-              <td>dashboard</td>
-              <td>irrelevant</td>
-              <td>text</td>
-              <td>placeholder</td>
-            </tr>
-            <tr>
-              <td>1,006</td>
-              <td>dashboard</td>
-              <td>illustrative</td>
-              <td>rich</td>
-              <td>data</td>
-            </tr>
-            <tr>
-              <td>1,007</td>
-              <td>placeholder</td>
-              <td>tabular</td>
-              <td>information</td>
-              <td>irrelevant</td>
-            </tr>
-            <tr>
-              <td>1,008</td>
-              <td>random</td>
-              <td>data</td>
-              <td>placeholder</td>
-              <td>text</td>
-            </tr>
-            <tr>
-              <td>1,009</td>
-              <td>placeholder</td>
-              <td>irrelevant</td>
-              <td>visual</td>
-              <td>layout</td>
-            </tr>
-            <tr>
-              <td>1,010</td>
-              <td>data</td>
-              <td>rich</td>
-              <td>dashboard</td>
-              <td>tabular</td>
-            </tr>
-            <tr>
-              <td>1,011</td>
-              <td>information</td>
-              <td>placeholder</td>
-              <td>illustrative</td>
-              <td>data</td>
-            </tr>
-            <tr>
-              <td>1,012</td>
-              <td>text</td>
-              <td>placeholder</td>
-              <td>layout</td>
-              <td>dashboard</td>
-            </tr>
-            <tr>
-              <td>1,013</td>
-              <td>dashboard</td>
-              <td>irrelevant</td>
-              <td>text</td>
-              <td>visual</td>
-            </tr>
-            <tr>
-              <td>1,014</td>
-              <td>dashboard</td>
-              <td>illustrative</td>
-              <td>rich</td>
-              <td>data</td>
-            </tr>
-            <tr>
-              <td>1,015</td>
-              <td>random</td>
-              <td>tabular</td>
-              <td>information</td>
-              <td>text</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </main>
-  </div>
+      
+      <div >
+          <h2>Details</h2>
+                <div className="table-responsive row">
+                  <table className="table table-striped table-sm">
+                    <thead>
+                      <tr>
+                        <th>Detail</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {transactions && expenseList.map((expense, id) => {
+                        return (<tr key={id}>
+                          <td>{expense.detail}</td>
+                          <td>{expense.type}</td>
+                          <td>{numberWithCommas(Math.abs(expense.amount))}Ft</td>
+                          <td>{formatDate(expense.date)}</td>
+                        </tr>)
+                      }) }
+                    </tbody>
+                  </table>
+                </div>
+                </div>
+              </main>
+
+          </div>
         </div>
-        </>
     )
 }
 

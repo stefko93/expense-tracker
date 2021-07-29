@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useContext, useEffect } from 'react'
 
 import { GlobalContext } from '../../../context/GlobalState';
@@ -14,26 +15,26 @@ export default function TransactionList() {
     return (
         <>
             <h2>History</h2>  
-                        <div className="table-responsive">
-                          <table className="table table-striped table-sm ">
-                            <thead>
-                              <tr>
-                                <th>Detail</th>
-                                <th>Type</th>
-                                <th>Amount</th>
-                                <th>Date</th>
-                                <th>Operations</th>
-                              </tr>
-                            </thead>         
-                         <tbody>                
-                            { transactions && transactions.map((transaction) => ( 
-                                <tr key={transaction}>
+            <div className="table-responsive">
+                <table className="table table-striped table-sm ">
+                    <thead>
+                        <tr>
+                            <th>Detail</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Operations</th>
+                        </tr>
+                    </thead>         
+                    <tbody>                
+                            {transactions && transactions.map((transaction, id) => { 
+                               return (<tr key={id}>
                                     <Transaction transaction={transaction} /> 
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                                </tr>)
+                            })}
+                    </tbody>
+                </table>
+            </div>
         </>
     )
 }

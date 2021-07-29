@@ -32,7 +32,6 @@ export const GlobalProvider = ({ children }) => {
         }
       }
 
-  // fetch.defaults.header.common["x-auth-token"] = getToken();
 
   async function getIncomes() {
     const config =  {
@@ -69,7 +68,7 @@ export const GlobalProvider = ({ children }) => {
   }
       try {
           const res = await fetch('http://localhost:5000/api/expenses', config).then((response) => response.json())
-
+          console.log(res.data)
           dispatch({
               type: 'GET_EXPENSES',
               payload: res.data
@@ -157,13 +156,6 @@ export const GlobalProvider = ({ children }) => {
 
     }
 
-    // function resetTransaction() {
-    //   dispatch({
-    //     type: 'RESET_TRANSACTION',
-    //   })
-    // }
-
-
     async function addTransaction(transaction) {
         const config =  {
             method: 'POST',
@@ -200,16 +192,24 @@ export const GlobalProvider = ({ children }) => {
             body: JSON.stringify(user)
         }
         try {
-          const res = await fetch('http://localhost:5000/api/register', config).then((response) => response.json());
+          const res = await fetch('http://localhost:5000/api/register', config);
+          const json = await res.json();
 
+          if (res.status === 400) {
+            if(json.error)
+              dispatch({
+                type: 'LOGIN_ERROR',
+                payload: json.error
+              });
+          } 
           dispatch({
             type: 'REGISTER_USER',
-            payload: res
+            payload: json
           });
         } catch (err) {
           dispatch({
             type: 'LOGIN_ERROR',
-            payload: err.response,
+            payload: err,
           });
         }
       }
@@ -224,16 +224,24 @@ export const GlobalProvider = ({ children }) => {
             body: JSON.stringify(user)
         }
         try {
-          const res = await fetch('http://localhost:5000/api/login', config).then((response) => response.json());
-          console.log(getToken())
+          const res = await fetch('http://localhost:5000/api/login', config);
+          const json = await res.json();
+
+          if (res.status === 400) {
+            if(json.error)
+              dispatch({
+                type: 'LOGIN_ERROR',
+                payload: json.error
+              });
+          } 
           dispatch({
             type: 'LOGIN_USER',
-            payload: res
+            payload: json
           });
         } catch (err) {
           dispatch({
             type: 'LOGIN_ERROR',
-            payload: err.response
+            payload: err,
           });
         }
       }
@@ -296,7 +304,6 @@ export const GlobalProvider = ({ children }) => {
         deleteTransaction,
         updateTransaction,
         addTransaction,
-        // resetTransaction,
         registerUser,
         loginUser,
         loadUser,
