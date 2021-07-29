@@ -1,7 +1,12 @@
+/* eslint-disable no-return-assign */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-plusplus */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-shadow */
 import React, {useEffect, useContext} from 'react';
 import { PieChart, Pie, Cell, Legend, Label, ResponsiveContainer  } from 'recharts';
+
+import { expenseCategories, resetCategories } from './ExpenseList';
 
 import { GlobalContext } from '../../../context/GlobalState';
 
@@ -19,30 +24,34 @@ import { GlobalContext } from '../../../context/GlobalState';
 // const colors = ['#b50d12', '#bf2f1f', '#c9452c', '#d3583a', '#dc6a48', '#e57c58', '#ee8d68', '#f79d79']; 
 
 const ExpensesChart = () => {
-  const { transactions, getTransactions, expenses, getExpenses } = useContext(GlobalContext);
+  resetCategories();
+  const { transactions, getTransactions } = useContext(GlobalContext);
 
   useEffect(() => {
       getTransactions();
-      getExpenses();
   }, [])
 
-  const colorList = expenses.map(expense => expense.color);
-  console.log(colorList);
-
   const expenseType = item => item.type === "Expense"
-  const expenseList = transactions.filter(expenseType);
+  const expenseListType = transactions.filter(expenseType);
 
-  const colors = ['#b50d12', '#bf2f1f', '#c9452c'];
-  const chartName = expenseList.map(expense => expense.category)
-  const chartValue = expenseList.map(expense => Math.abs(expense.amount));
+  expenseListType.forEach((t) => {
+    const expenseList = expenseCategories.find((c) => c.type === t.category )
+    
+    if(expenseList){
+      expenseList.amount -= t.amount
+    }
+  })
 
-  console.log(chartName);
-  console.log(chartValue);
+  const filteredCategory = expenseCategories.filter((sc) => sc.amount > 0)
 
+  const name = filteredCategory.map((c) => {return c.type})
+  const value = filteredCategory.map((c) => {return Math.abs(c.amount)})
+  const color = filteredCategory.map((c) => {return c.color})
 
-    // const  = expenseList.category;
-    // const 
-    // const colors = 
+  const result = [];
+  for (let i = 0; i < name.length; i++) {
+    result[i] = {name: name[i], value: value[i]};
+  }
 
   return (
         <ResponsiveContainer width="100%" height="100%">
@@ -51,16 +60,16 @@ const ExpensesChart = () => {
             <Pie
               dataKey="value"
               isAnimationActive={false}
-              data={chartValue}
+              data={result}
               cx="50%"
               cy="50%"
               innerRadius={40}
               outerRadius={80}
               fill="#8884d8"
-              label={chartName} 
+              label={(result) => result.name} 
             >
-              {chartName.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+              {result.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={color[index % color.length]} />
             ))}
               <Label value="Expenses" position="center" />
               

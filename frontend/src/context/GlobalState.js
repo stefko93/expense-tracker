@@ -68,7 +68,6 @@ export const GlobalProvider = ({ children }) => {
   }
       try {
           const res = await fetch('http://localhost:5000/api/expenses', config).then((response) => response.json())
-          console.log(res.data)
           dispatch({
               type: 'GET_EXPENSES',
               payload: res.data
@@ -276,7 +275,7 @@ export const GlobalProvider = ({ children }) => {
             payload: res,
           });
         } catch (err) {
-          console.log(err.response)
+
           dispatch({
             type: 'LOGIN_ERROR',
             payload: err.response
