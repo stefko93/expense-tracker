@@ -47,10 +47,10 @@ export const transactionController = {
 
   async updateTransactionById(req, res) {
     try {
-      const { amount, text, date } = req.body;
+      const { amount, type, detail, date } = req.body;
       const transaction = await Transaction.findByIdAndUpdate(
         req.params.id,
-        { amount, text, date },
+        { amount, type, detail, date },
         { new: true }
       );
 

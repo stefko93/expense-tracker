@@ -13,7 +13,9 @@ export const userController = {
 
       const emailExist = await User.findOne({ email });
       if (emailExist)
-        return res.status(400).send('This email has already been used.');
+        return res
+          .status(400)
+          .send({ error: 'This email has already been used.' });
 
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
@@ -42,8 +44,6 @@ export const userController = {
         error: 'Server Error',
       });
     }
-    // const user = await userService.registerUser(req.body);
-    // res.status(user.status).json({ user });
   },
 
   async loginUser(req, res) {
@@ -54,10 +54,11 @@ export const userController = {
       if (error) return res.status(400).send(error.details[0].message);
 
       const user = await User.findOne({ email });
-      if (!user) return res.status(400).send('User does not exist');
+      if (!user) return res.status(400).send({ error: 'User does not exist' });
 
       const validPassword = await bcrypt.compare(password, user.password);
-      if (!validPassword) return res.status(400).send('Invalid password');
+      if (!validPassword)
+        return res.status(400).send({ error: 'Invalid password' });
 
       const token = user.generateAuthToken();
 
@@ -69,6 +70,7 @@ export const userController = {
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
+          token,
         },
       });
     } catch (error) {
@@ -77,9 +79,6 @@ export const userController = {
         error: 'Server Error',
       });
     }
-
-    // const user = await userService.loginUser(req.body);
-    // res.status(user.status).json({ user });
   },
 
   async logoutUser(req, res) {
@@ -95,7 +94,6 @@ export const userController = {
 
   async loadUser(req, res) {
     const user = await User.findById(req.user.id).select('-password');
-    // return res.send(user);
     return res.status(200).json({
       success: true,
       user,
