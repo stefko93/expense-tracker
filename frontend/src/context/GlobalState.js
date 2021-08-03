@@ -248,6 +248,7 @@ export const GlobalProvider = ({ children }) => {
       async function loadUser() {
         try {
           const res = await fetch('http://localhost:5000/api/users').then((response) => response.json());
+          console.log(res)
           dispatch({
             type: 'LOAD_USER',
             payload: res.data

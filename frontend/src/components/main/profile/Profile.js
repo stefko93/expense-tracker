@@ -5,9 +5,10 @@ import React from 'react';
 import AuthNavBar from '../../navbars/AuthNavBar';
 import SideBar from '../../utils/SideBar';
 import Avatar from './Avatar';
+import ProfilForm from './ProfilForm';
 
 
-export default function Profile(props) {
+export default function Profile() {
     return (
         <>
             <AuthNavBar />
@@ -24,9 +25,8 @@ export default function Profile(props) {
 
                         
                         <Avatar />
-                        <div>
-                            {props.name}
-                        </div>
+                        <ProfilForm />
+
                         
                     </main>
                 </div>

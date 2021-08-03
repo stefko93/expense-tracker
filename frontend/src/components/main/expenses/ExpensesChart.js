@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-return-assign */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-plusplus */
@@ -9,19 +10,6 @@ import { PieChart, Pie, Cell, Legend, Label, ResponsiveContainer  } from 'rechar
 import { expenseCategories, resetCategories } from './ExpenseList';
 
 import { GlobalContext } from '../../../context/GlobalState';
-
-// const data = [
-//     { name: 'household', value: 100 },
-//     { name: 'travel', value: 300 },
-//     { name: 'food & drink', value: 100 },
-//     { name: 'personal items', value: 80 },
-//     { name: 'pets', value: 40 },
-//     { name: 'services', value: 30 },
-//     { name: 'health', value: 50 },
-//     { name: 'fun & relax', value: 100 }
-//   ];
-
-// const colors = ['#b50d12', '#bf2f1f', '#c9452c', '#d3583a', '#dc6a48', '#e57c58', '#ee8d68', '#f79d79']; 
 
 const ExpensesChart = () => {
   resetCategories();
@@ -51,7 +39,7 @@ const ExpensesChart = () => {
   const result = [];
   for (let i = 0; i < name.length; i++) {
     result[i] = {name: name[i], value: value[i]};
-  }
+  }  
 
   return (
         <ResponsiveContainer width="100%" height="100%">
@@ -77,6 +65,6 @@ const ExpensesChart = () => {
           </PieChart>
         </ResponsiveContainer>
       );
-}
+  }
 
 export default ExpensesChart;
