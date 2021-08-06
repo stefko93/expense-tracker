@@ -20,8 +20,8 @@ router.post('/login', userController.loginUser);
 router.get('/user', auth, userController.loadUser);
 router.put('/users/:id', auth, userController.updateUser);
 
-router.get('/payment', auth, paymentController.getPayments);
-router.post('/payment', paymentController.addPayment);
+router.get('/payments', auth, paymentController.getPayments);
+router.post('/payments', auth, paymentController.addPayment);
 
 router.get('/incomes', auth, incomeController.getIncomes);
 router.post('/incomes', incomeController.getIncomes);

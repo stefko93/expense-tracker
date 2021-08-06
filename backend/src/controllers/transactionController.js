@@ -21,8 +21,6 @@ export const transactionController = {
 
   async addTransaction(req, res) {
     try {
-      const { text, amount } = req.body;
-
       const transaction = await Transaction.create(req.body);
 
       return res.status(201).json({
@@ -47,10 +45,10 @@ export const transactionController = {
 
   async updateTransactionById(req, res) {
     try {
-      const { amount, type, detail, date } = req.body;
+      const { amount, type, detail, payment, date } = req.body;
       const transaction = await Transaction.findByIdAndUpdate(
         req.params.id,
-        { amount, type, detail, date },
+        { amount, type, detail, payment, date },
         { new: true }
       );
 

@@ -11,6 +11,11 @@ const transactionSchema = new mongoose.Schema({
     trim: true,
     required: [true, 'Please choose category'],
   },
+  payment: {
+    type: String,
+    trim: true,
+    required: [true, 'Please choose payment'],
+  },
   detail: {
     type: String,
     trim: true,

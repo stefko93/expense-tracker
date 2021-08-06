@@ -4,12 +4,12 @@ import Payment from '../models/Payment';
 export const paymentController = {
   async getPayments(req, res) {
     try {
-      const payment = await Payment.find();
+      const payments = await Payment.find();
 
       return res.status(200).json({
         success: true,
-        count: payment.length,
-        data: payment,
+        count: payments.length,
+        data: payments,
       });
     } catch (err) {
       return res.status(500).json({
@@ -21,8 +21,6 @@ export const paymentController = {
 
   async addPayment(req, res) {
     try {
-      const { type, color } = req.body;
-
       const payment = await Payment.create(req.body);
 
       return res.status(201).json({
