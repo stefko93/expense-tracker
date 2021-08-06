@@ -13,6 +13,7 @@ const initialState = {
     loading: true,
     incomes: [],
     expenses: [],
+    payments: [],
 }
 export const GlobalContext = createContext(initialState);
 
@@ -32,12 +33,35 @@ export const GlobalProvider = ({ children }) => {
         }
       }
 
+      async function getPayments() {
+        const config =  {
+          method: 'GET',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${await getToken()}`
+          }
+      }
+          try {
+              const res = await fetch('http://localhost:5000/api/payments', config).then((response) => response.json())
+
+              dispatch({
+                  type: 'GET_PAYMENTS',
+                  payload: res.data
+                });
+          } catch (err) {
+              dispatch({
+                  type: 'TRANSACTION_ERROR',
+                  payload: err.response.data.error
+                });
+          }
+      }
 
   async function getIncomes() {
     const config =  {
       method: 'GET',
       headers: {
-        'Accept': 'application/json',
+          'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${await getToken()}`
       }
@@ -142,6 +166,7 @@ export const GlobalProvider = ({ children }) => {
         }
         try {
             const res = await fetch(`http://localhost:5000/api/transactions/${id}`, config)
+            console.log(res)
             dispatch({
                 type: 'UPDATE_TRANSACTION',
                 payload: res
@@ -298,6 +323,8 @@ export const GlobalProvider = ({ children }) => {
         loading: state.loading,
         incomes: state.incomes,
         expenses: state.expenses,
+        payments: state.payments,
+        getPayments,
         getIncomes,
         getExpenses,
         getTransactions,

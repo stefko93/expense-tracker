@@ -44,6 +44,7 @@ function App() {
             <NonAuthDashboard />
           </Route>
         </Switch>
+        
       </Router>
     </GlobalProvider>
   );

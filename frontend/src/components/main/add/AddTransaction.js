@@ -10,19 +10,23 @@ import Select from '../../utils/Select'
 import { GlobalContext } from '../../../context/GlobalState';
 
 const AddTransaction = () => {
-    const { addTransaction, incomes, expenses, getIncomes, getExpenses } = useContext(GlobalContext);
+    const { addTransaction, incomes, expenses, payments, getIncomes, getExpenses, getPayments } = useContext(GlobalContext);
       
     useEffect(() => {
       getIncomes();
       getExpenses();
-    }, [])
+      getPayments();
+  }, [])
 
+  
+    const payment = payments.map(pay => pay.type)
     const incomeTypes = incomes.map(income => income.type);
     const expenseTypes = expenses.map(expense => expense.type);
 
     const [fieldValues, setFieldValues] = useState({
         type:"",
-        category: '',
+        category: "",
+        payment: "",
         detail: "",
         amount: "",
         date: new Date()
@@ -31,6 +35,7 @@ const AddTransaction = () => {
       const [errors, setErrors] = useState({
         type:"",
         category: '',
+        payment: "",
         text: "",
         amount: "",
       });
@@ -43,6 +48,7 @@ const AddTransaction = () => {
       const references = {
         type: useRef(),
         category: useRef(),
+        payment: useRef(),
         detail: useRef(),
         amount: useRef(),
         date: useRef()
@@ -61,6 +67,9 @@ const AddTransaction = () => {
           required: isNotEmpty
         },
         category: {
+          required: isNotEmpty
+        },
+        payment: {
           required: isNotEmpty
         },
         detail: {
@@ -125,6 +134,7 @@ const AddTransaction = () => {
             const newTransaction = {
               type: fieldValues.type,
               category: fieldValues.category,
+              payment: fieldValues.payment,
               detail: fieldValues.detail,
               amount: (fieldValues.type) === "Expense" ? -Math.abs(fieldValues.amount) :  Math.abs(fieldValues.amount) ,
               date: new Date(),
@@ -138,6 +148,7 @@ const AddTransaction = () => {
                 setFieldValues({
                   type:"",
                   category: '',
+                  payment: "",
                   detail: "",
                   amount: "",
                   date: new Date()
@@ -210,6 +221,19 @@ const AddTransaction = () => {
                   handleInputChange={handleInputChange}
                   required
                   options={selectedCategories}
+                />
+
+              <Select
+                  reference={references.payment}
+                  name="payment"
+                  labelText="Payment"
+                  type="select"
+                  errors={errors}
+                  fieldValues={fieldValues}
+                  handleInputBlur={handleInputBlur}
+                  handleInputChange={handleInputChange}
+                  required
+                  options={payment}
                 />
 
 

@@ -14,8 +14,17 @@ export default function Balance() {
         getTransactions();
     }, [])
 
-    const amounts = transactions.map(transition => transition.amount);
-    const total = amounts.reduce((acc, item) => (acc += item), 0);
+    let total = 0;
+    let amounts = 0;
+
+    if(transactions === 'undefined' || transactions === 0){
+        amounts = 0;
+        total = 0;
+    } else {
+        amounts = transactions.map(transition => transition.amount);
+        total = amounts.reduce((acc, item) => (acc += item), 0);
+    }
+    
 
 
     return (

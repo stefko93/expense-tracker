@@ -44,6 +44,7 @@ const Expenses = () => {
                       <tr>
                         <th>Detail</th>
                         <th>Type</th>
+                        <th>Payment</th>
                         <th>Amount</th>
                         <th>Date</th>
                       </tr>
@@ -53,6 +54,7 @@ const Expenses = () => {
                         return (<tr key={id}>
                           <td>{expense.detail}</td>
                           <td>{expense.type}</td>
+                          <td>{expense.payment}</td>
                           <td>{numberWithCommas(Math.abs(expense.amount))}Ft</td>
                           <td>{formatDate(expense.date)}</td>
                         </tr>)

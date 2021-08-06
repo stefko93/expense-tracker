@@ -20,12 +20,12 @@ export default function IncomeExpenses() {
             <div className="row">
                 <div className="col text-center">
                     <h3>Income</h3>
-                    {transactions && <h4>{numberWithCommas(income)}Ft</h4>}
+                    {transactions && <h4>+{numberWithCommas(income)}Ft</h4>}
                 </div>
 
                 <div className="col text-center">
                     <h3>Expense</h3>
-                    {transactions && <h4>{numberWithCommas(expense)}Ft</h4>}
+                    {transactions && <h4>-{numberWithCommas(expense)}Ft</h4>}
                 </div>
             </div>
       </div>

@@ -21,6 +21,7 @@ export default function TransactionList() {
                         <tr>
                             <th>Detail</th>
                             <th>Type</th>
+                            <th>Payment</th>
                             <th>Amount</th>
                             <th>Date</th>
                             <th>Operations</th>

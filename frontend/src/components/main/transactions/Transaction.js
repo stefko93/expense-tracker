@@ -28,6 +28,7 @@ const Transaction = ({ transaction }) => {
          <>
             <td>{transaction.detail}</td>
             <td>{transaction.type}</td>
+            <td>{transaction.payment}</td>
             <td>{sign}{numberWithCommas(Math.abs(transaction.amount))}Ft</td>
             <td>{formatDate(transaction.date)}</td>
             <td style={{whiteSpace: "nowrap"}}>

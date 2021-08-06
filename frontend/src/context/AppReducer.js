@@ -3,6 +3,13 @@
 /* eslint-disable import/no-anonymous-default-export */
 const AppReducer = (state, action) => {
     switch(action.type) {
+        case 'GET_PAYMENTS': {
+            return {
+                ...state,
+                loading: false,
+                payments: action.payload
+            }
+        }
         case 'GET_INCOMES': {
             return {
                 ...state,
