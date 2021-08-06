@@ -3,6 +3,7 @@ import { userController } from '../controllers/userController';
 import { expenseController } from '../controllers/expenseController';
 import { incomeController } from '../controllers/incomeController';
 import { transactionController } from '../controllers/transactionController';
+import { paymentController } from '../controllers/paymentController';
 import auth from '../middlewares/auth';
 
 const cors = require('cors');
@@ -19,12 +20,15 @@ router.post('/login', userController.loginUser);
 router.get('/user', auth, userController.loadUser);
 router.put('/users/:id', auth, userController.updateUser);
 
-router.get('/incomes', incomeController.getIncomes);
-// router.post('/incomes', incomeController.getIncomes);
+router.get('/payment', auth, paymentController.getPayments);
+router.post('/payment', paymentController.addPayment);
+
+router.get('/incomes', auth, incomeController.getIncomes);
+router.post('/incomes', incomeController.getIncomes);
 // router.put('/incomes/:id', productController.updateIncome);
 // router.delete('/incomes/:id', productController.deleteIncome);
 
-router.get('/expenses', expenseController.getExpenses);
+router.get('/expenses', auth, expenseController.getExpenses);
 // router.post('/expenses', customerController.createExpense);
 // router.put('/expenses/:id', customerController.updateExpense);
 // router.delete('/expenses/:id', customerController.deleteExpense);
