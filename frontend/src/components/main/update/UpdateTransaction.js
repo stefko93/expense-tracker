@@ -41,6 +41,7 @@ const UpdateTransaction = ( ) => {
       payment: "",
       detail: "",
       amount: "",
+      date: ""
     });
 
 
@@ -141,7 +142,7 @@ const UpdateTransaction = ( ) => {
         payment: fieldValues.payment,
         detail: fieldValues.detail,
         amount: (fieldValues.type) === "Expense" ? -Math.abs(fieldValues.amount) :  Math.abs(fieldValues.amount) ,
-        date: new Date(),
+        date: fieldValues.date,
       }
 
       updateTransaction(transaction._id, newTransaction);   
@@ -155,7 +156,7 @@ const UpdateTransaction = ( ) => {
           payment: "",
           detail: "",
           amount: "",
-          date: new Date()
+          date: "",
         })
     } else {
       setFormWasValidated(false);

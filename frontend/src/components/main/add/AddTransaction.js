@@ -36,8 +36,9 @@ const AddTransaction = () => {
         type:"",
         category: '',
         payment: "",
-        text: "",
+        detail: "",
         amount: "",
+        date: ""
       });
     
       const [isAddSuccess, setIsAddSuccess] = useState(false);  
@@ -151,7 +152,7 @@ const AddTransaction = () => {
                   payment: "",
                   detail: "",
                   amount: "",
-                  date: new Date()
+                  date: "",
                 })
          } else {
                 setFormWasValidated(false);
@@ -181,7 +182,7 @@ const AddTransaction = () => {
       }
 
       if(isAddSuccess){
-        <Redirect to="/dashboard" />
+        <Redirect to="/transactions" />
       }
   
 
